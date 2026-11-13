@@ -3,12 +3,7 @@
 backups/
 data/
 scripts/
-server.js
 test-*.js
-admin-login.html
-admin-dashboard.html
-package.json
-package-lock.json
 *.enc
 *.map
 *.md

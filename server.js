@@ -182,7 +182,7 @@ function checkRateLimit(ip, bucket, maxRequests, windowMs) {
  */
 function getClientIp(req) {
   const remoteAddr = String(req.socket?.remoteAddress || '127.0.0.1');
-  const isTrustedProxy = process.env.TRUST_PROXY === 'true' ||
+  const isTrustedProxy = process.env.TRUST_PROXY === 'true' || process.env.VERCEL === '1' ||
     remoteAddr === '127.0.0.1' || remoteAddr === '::1' || remoteAddr === '::ffff:127.0.0.1';
   if (isTrustedProxy) {
     const cfIp = req.headers['cf-connecting-ip'];
@@ -267,6 +267,20 @@ function isCrossSitePost(req) {
   }
 }
 
+function sanitizeJsonText(rawText, maxBytes) {
+  if (Buffer.byteLength(rawText, 'utf8') > maxBytes) {
+    throw new Error('PAYLOAD_TOO_LARGE');
+  }
+  if (!rawText) return {};
+  const parsed = JSON.parse(rawText, (k, v) => (
+    k === '__proto__' || k === 'constructor' || k === 'prototype' ? undefined : v
+  ));
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('INVALID_JSON');
+  }
+  return parsed;
+}
+
 /**
  * Parse JSON Request Body with byte length limit, Content-Type check & prototype pollution guard
  */
@@ -275,6 +289,15 @@ function parseJsonBody(req, maxBytes = 32 * 1024) {
     const contentType = String(req.headers['content-type'] || '');
     if (contentType && !contentType.toLowerCase().includes('application/json')) {
       return reject(new Error('UNSUPPORTED_MEDIA'));
+    }
+    const bodyDesc = Object.getOwnPropertyDescriptor(req, 'body');
+    if (bodyDesc && 'value' in bodyDesc && bodyDesc.value !== undefined) {
+      try {
+        const raw = typeof bodyDesc.value === 'string' ? bodyDesc.value : JSON.stringify(bodyDesc.value);
+        return resolve(sanitizeJsonText(raw, maxBytes));
+      } catch (err) {
+        return reject(err instanceof Error && err.message === 'PAYLOAD_TOO_LARGE' ? err : new Error('INVALID_JSON'));
+      }
     }
     let body = '';
     let bytes = 0;
@@ -299,16 +322,9 @@ function parseJsonBody(req, maxBytes = 32 * 1024) {
       if (settled) return;
       settled = true;
       try {
-        if (!body) return resolve({});
-        const parsed = JSON.parse(body, (k, v) => (
-          k === '__proto__' || k === 'constructor' || k === 'prototype' ? undefined : v
-        ));
-        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-          return reject(new Error('INVALID_JSON'));
-        }
-        resolve(parsed);
-      } catch {
-        reject(new Error('INVALID_JSON'));
+        resolve(sanitizeJsonText(body, maxBytes));
+      } catch (err) {
+        reject(err instanceof Error && err.message === 'PAYLOAD_TOO_LARGE' ? err : new Error('INVALID_JSON'));
       }
     });
     req.on('error', () => fail('REQUEST_ERROR'));
@@ -335,7 +351,16 @@ function sendBodyErrorStatus(res, err, secHeaders) {
   return res.end(JSON.stringify({ error: msg }));
 }
 
-const server = http.createServer(async (req, res) => {
+// Explicit path hints so @vercel/nft bundles root HTML documents alongside server.js
+const BUNDLED_HTML_PAGES = {
+  '/index.html': path.join(__dirname, 'index.html'),
+  '/kebijakan-privasi.html': path.join(__dirname, 'kebijakan-privasi.html'),
+  '/404.html': path.join(__dirname, '404.html'),
+  '/admin-login.html': path.join(__dirname, 'admin-login.html'),
+  '/admin-dashboard.html': path.join(__dirname, 'admin-dashboard.html')
+};
+
+async function requestHandler(req, res) {
   const secHeaders = getSecurityHeaders(req);
   try {
     const rawUrl = String(req.url || '/');
@@ -773,7 +798,9 @@ const server = http.createServer(async (req, res) => {
       res.end('Internal Server Error');
     }
   }
-});
+}
+
+const server = http.createServer(requestHandler);
 
 function startServer(port) {
   server.removeAllListeners('error');
@@ -804,4 +831,39 @@ if (require.main === module) {
   startServer(PORT);
 }
 
-module.exports = server;
+/**
+ * Vercel Serverless handler: invokes requestHandler and resolves only after the HTTP response finishes.
+ */
+function vercelHandler(req, res) {
+  return new Promise((resolve) => {
+    let finished = false;
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      resolve();
+    };
+    if (typeof res.once === 'function') {
+      res.once('finish', done);
+      res.once('close', done);
+    }
+    Promise.resolve(requestHandler(req, res)).catch((err) => {
+      sendAlertNotification('REQUEST_HANDLER_ERROR', err?.message || String(err), 'HIGH');
+      if (!res.headersSent) {
+        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', ...getSecurityHeaders(req) });
+        res.end('Internal Server Error');
+      }
+      done();
+    });
+  });
+}
+
+vercelHandler.server = server;
+vercelHandler.bundledPages = BUNDLED_HTML_PAGES;
+vercelHandler.listeners = (...args) => server.listeners(...args);
+vercelHandler.on = (...args) => server.on(...args);
+vercelHandler.once = (...args) => server.once(...args);
+vercelHandler.emit = (...args) => server.emit(...args);
+vercelHandler.listen = (...args) => server.listen(...args);
+vercelHandler.close = (...args) => server.close(...args);
+
+module.exports = vercelHandler;
