@@ -1,0 +1,60 @@
+# ==============================================================================
+# SAJI (Sajian Healthy Bowl) — DevSecOps .gitignore
+# Prevents accidental credential leaks, build artifacts, and system files
+# ==============================================================================
+
+# Environment Variables & Secrets (CRITICAL - Zero Credential Leakage)
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Node.js & Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Server & Runtime Logs
+logs
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor Directories
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Hosting & Deployment Caches
+.vercel
+.vercel/
+.output/
+.turbo/
+.cache/
+dist/
+build/
+
+# Database Backups & Sandbox Testing (SRE Privacy Lock)
+backups/
+*.enc
+data/test_restore_sandbox/

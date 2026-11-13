@@ -1,0 +1,51 @@
+# robots.txt for SAJI (Sajian Healthy Bowl)
+# https://sajibowl.id/
+
+User-agent: *
+Allow: /
+# Disallow administrative and private API endpoints
+Disallow: /admin
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /api/
+
+# Googlebot & Search Engines
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /assets/
+
+# AI Crawlers & LLM Engines
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap & LLMs Documentation
+Sitemap: https://sajibowl.id/sitemap.xml

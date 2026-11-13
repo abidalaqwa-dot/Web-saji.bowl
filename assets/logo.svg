@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" width="100%" height="100%">
+  <defs>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#1E3622" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  
+  <!-- SAJI Wordmark -->
+  <!-- S -->
+  <path d="M 38 78 C 30 78 22 74 18 68 C 16 65 18 61 22 61 C 24 61 26 62 28 64 C 31 67 35 69 39 69 C 45 69 49 66 49 61 C 49 56 45 54 37 51 C 24 46 17 40 17 29 C 17 17 27 10 39 10 C 47 10 54 13 58 18 C 60 21 59 25 55 25 C 53 25 51 24 49 22 C 46 19 43 18 39 18 C 34 18 30 21 30 26 C 30 30 33 33 41 36 C 54 41 62 47 62 58 C 62 70 52 78 38 78 Z" fill="#C85A32"/>
+
+  <!-- A with inner bowl -->
+  <g>
+    <!-- Outer 'A' body -->
+    <path d="M 76 76 C 72 76 68 72 70 66 L 90 16 C 92 11 96 8 102 8 C 108 8 112 11 114 16 L 134 66 C 136 72 132 76 128 76 C 124 76 121 73 119 68 L 114 55 L 90 55 L 85 68 C 83 73 80 76 76 76 Z M 93 46 L 111 46 L 102 24 Z" fill="#C85A32"/>
+    <!-- Stylized Bowl Icon nestled in the A crossbar -->
+    <path d="M 92 48 C 92 56 97 60 102 60 C 107 60 112 56 112 48 Z" fill="#E8A855"/>
+    <path d="M 91 48 L 113 48" stroke="#1E3622" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- J -->
+  <path d="M 166 12 C 171 12 174 15 174 20 L 174 54 C 174 68 164 77 150 77 C 137 77 128 69 128 58 C 128 54 131 51 135 51 C 139 51 141 53 143 56 C 144 60 147 64 151 64 C 156 64 161 60 161 53 L 161 20 C 161 15 163 12 166 12 Z" fill="#C85A32"/>
+
+  <!-- i with bowl dot -->
+  <g>
+    <!-- Lower stem of 'i' -->
+    <path d="M 188 34 C 188 30 191 28 196 28 C 200 28 203 30 203 34 L 203 70 C 203 74 200 76 196 76 C 191 76 188 74 188 70 Z" fill="#C85A32"/>
+    
+    <!-- Bowl as dot of 'i' -->
+    <circle cx="196" cy="16" r="13" fill="#1E3622" filter="url(#soft-shadow)"/>
+    <circle cx="196" cy="16" r="11" fill="#4B6B46"/>
+    <!-- Bowl contents: colorful toppings -->
+    <circle cx="194" cy="14" r="5" fill="#7A497A"/> <!-- Purple Sweet Potato -->
+    <circle cx="199" cy="13" r="4" fill="#F3C677"/> <!-- Corn / Ancient Grain -->
+    <circle cx="196" cy="18" r="4.5" fill="#E8A855"/> <!-- Grilled Chicken -->
+    <circle cx="192" cy="18" r="3.5" fill="#2E7D32"/> <!-- Fresh Greens -->
+    <circle cx="200" cy="18" r="2.5" fill="#C85A32"/> <!-- Diced Carrot/Paprika -->
+  </g>
+
+  <!-- Descriptor Subtitle -->
+  <text x="75" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-size="14.5" font-weight="700" letter-spacing="1.5" fill="#1E3622">Sajian Healthy Bowl</text>
+</svg>

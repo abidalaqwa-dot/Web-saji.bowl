@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%" height="100%">
+  <defs>
+    <filter id="ing-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#1E3622" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Group of scattered Indonesian superfood raw ingredients with drop shadows -->
+  <g filter="url(#ing-shadow)">
+    <!-- Cassava / Singkong sliced rounds -->
+    <g transform="translate(140, 90) rotate(15)">
+      <ellipse cx="0" cy="0" rx="32" ry="24" fill="#6D4C2B"/>
+      <ellipse cx="-1" cy="-1" rx="27" ry="20" fill="#FDFBF7"/>
+      <circle cx="-1" cy="-1" r="2" fill="#D7CCC8"/>
+    </g>
+
+    <g transform="translate(200, 130) rotate(-20)">
+      <ellipse cx="0" cy="0" rx="26" ry="19" fill="#5D4037"/>
+      <ellipse cx="-1" cy="-1" rx="22" ry="16" fill="#F5F5F0"/>
+    </g>
+
+    <!-- Purple Sweet Potato / Ubi Ungu Cubes -->
+    <g transform="translate(290, 80) rotate(25)">
+      <rect x="-16" y="-16" width="32" height="32" rx="6" fill="#581845"/>
+      <rect x="-14" y="-14" width="28" height="28" rx="5" fill="#7A497A"/>
+      <rect x="-10" y="-10" width="20" height="20" rx="3" fill="#9C27B0" opacity="0.4"/>
+    </g>
+
+    <g transform="translate(350, 120) rotate(-15)">
+      <rect x="-14" y="-14" width="28" height="28" rx="5" fill="#4A154B"/>
+      <rect x="-12" y="-12" width="24" height="24" rx="4" fill="#702963"/>
+    </g>
+
+    <g transform="translate(420, 75) rotate(40)">
+      <rect x="-12" y="-12" width="24" height="24" rx="4" fill="#581845"/>
+      <rect x="-10" y="-10" width="20" height="20" rx="3" fill="#800080"/>
+    </g>
+
+    <!-- Golden Sorghum Grains / Ancient Grain clusters -->
+    <g transform="translate(500, 110)">
+      <ellipse cx="-10" cy="-5" rx="6" ry="4" fill="#E8A855" transform="rotate(30 -10 -5)"/>
+      <ellipse cx="0" cy="5" rx="7" ry="4.5" fill="#F3C677" transform="rotate(-20 0 5)"/>
+      <ellipse cx="12" cy="-2" rx="6.5" ry="4" fill="#D4913B" transform="rotate(45 12 -2)"/>
+      <ellipse cx="5" cy="-12" rx="5.5" ry="3.5" fill="#E8A855" transform="rotate(10 5 -12)"/>
+      <ellipse cx="-8" cy="12" rx="6" ry="4" fill="#F3C677" transform="rotate(-60 -8 12)"/>
+    </g>
+
+    <g transform="translate(560, 85)">
+      <ellipse cx="-8" cy="2" rx="6" ry="4" fill="#F3C677" transform="rotate(15 -8 2)"/>
+      <ellipse cx="6" cy="-4" rx="7" ry="4.5" fill="#E8A855" transform="rotate(-35 6 -4)"/>
+      <ellipse cx="12" cy="8" rx="6" ry="3.8" fill="#C85A32" transform="rotate(50 12 8)"/>
+    </g>
+
+    <!-- Fresh Mint / Basil / Spinach Green Leaves -->
+    <g transform="translate(640, 100) rotate(-25)">
+      <path d="M 0 -25 C 20 -15 25 15 0 28 C -25 15 -20 -15 0 -25 Z" fill="#4CAF50"/>
+      <path d="M 0 -22 L 0 25" stroke="#2E7D32" stroke-width="1.5"/>
+      <path d="M 0 -10 Q 8 -5 12 0" stroke="#2E7D32" stroke-width="1" fill="none"/>
+      <path d="M 0 5 Q -8 10 -12 15" stroke="#2E7D32" stroke-width="1" fill="none"/>
+    </g>
+
+    <g transform="translate(90, 120) rotate(35)">
+      <path d="M 0 -20 C 16 -10 18 10 0 22 C -18 10 -16 -10 0 -20 Z" fill="#66BB6A"/>
+      <path d="M 0 -18 L 0 20" stroke="#388E3C" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "name": "saji-web",
+  "version": "1.0.0",
+  "description": "SAJI — Sajian Healthy Bowl Official Brand & Product Showcase Website",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node scripts/build.js",
+    "test": "node test-security.js && node test-performance.js && node test-release-gate.js",
+    "backup": "node scripts/backup-database.js",
+    "restore-drill": "node scripts/restore-drill.js"
+  },
+  "keywords": [
+    "saji",
+    "healthy-bowl",
+    "nusantara"
+  ],
+  "author": "",
+  "license": "ISC"
+}

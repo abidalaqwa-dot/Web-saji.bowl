@@ -1,0 +1,44 @@
+<!-- Nadia Putri Avatar (Hero review customer) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <clipPath id="circle-clip">
+      <circle cx="80" cy="80" r="76"/>
+    </clipPath>
+  </defs>
+  <circle cx="80" cy="80" r="76" fill="#F3C677"/>
+  <g clip-path="url(#circle-clip)">
+    <!-- Body/Shoulders -->
+    <path d="M 25 170 C 25 125 50 115 80 115 C 110 115 135 125 135 170 Z" fill="#C85A32"/>
+    <path d="M 68 115 L 80 130 L 92 115 Z" fill="#E8A855"/>
+    <!-- Neck -->
+    <rect x="70" y="85" width="20" height="30" fill="#ECC39E"/>
+    <!-- Head -->
+    <ellipse cx="80" cy="72" rx="28" ry="32" fill="#ECC39E"/>
+    <!-- Hair back -->
+    <path d="M 40 70 C 35 110 50 140 50 140 C 50 140 45 90 52 65 C 55 45 70 30 80 30 C 90 30 105 45 108 65 C 115 90 110 140 110 140 C 110 140 125 110 120 70 C 118 40 102 24 80 24 C 58 24 42 40 40 70 Z" fill="#2C1A14"/>
+    <!-- Hair bangs -->
+    <path d="M 52 56 C 65 48 78 52 82 58 C 86 52 98 48 108 58 C 104 46 95 38 80 38 C 65 38 56 46 52 56 Z" fill="#2C1A14"/>
+    <!-- Face details -->
+    <!-- Eyes -->
+    <ellipse cx="69" cy="72" rx="3.5" ry="4.5" fill="#1E3622"/>
+    <ellipse cx="91" cy="72" rx="3.5" ry="4.5" fill="#1E3622"/>
+    <circle cx="70.5" cy="70.5" r="1.5" fill="#FFFFFF"/>
+    <circle cx="92.5" cy="70.5" r="1.5" fill="#FFFFFF"/>
+    <!-- Eyebrows -->
+    <path d="M 64 64 Q 70 61 76 64" stroke="#2C1A14" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 84 64 Q 90 61 96 64" stroke="#2C1A14" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Smile -->
+    <path d="M 72 84 Q 80 92 88 84" stroke="#C85A32" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Cheeks -->
+    <ellipse cx="64" cy="79" rx="5" ry="3" fill="#FF8A80" opacity="0.6"/>
+    <ellipse cx="96" cy="79" rx="5" ry="3" fill="#FF8A80" opacity="0.6"/>
+    <!-- Salad Bowl held in hand -->
+    <g transform="translate(48, 120)">
+      <ellipse cx="32" cy="18" rx="28" ry="12" fill="#1E3622"/>
+      <ellipse cx="32" cy="15" rx="25" ry="10" fill="#4B6B46"/>
+      <circle cx="28" cy="14" r="4" fill="#7A497A"/>
+      <circle cx="36" cy="13" r="3.5" fill="#F3C677"/>
+      <circle cx="33" cy="16" r="3" fill="#E8A855"/>
+    </g>
+  </g>
+</svg>

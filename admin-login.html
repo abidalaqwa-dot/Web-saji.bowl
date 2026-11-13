@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login Portal | SAJI Healthy Bowl</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --c-dark-forest: #1E3622;
+      --c-dark-pine: #142617;
+      --c-warm-cream: #F7F5F0;
+      --c-soft-oatmeal: #EBE6DA;
+      --c-white: #FFFFFF;
+      --c-terracotta: #C85A32;
+      --c-terracotta-dark: #A9431E;
+      --c-warm-ochre: #F3C677;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-serif: 'Fraunces', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --shadow-brutal: 3px 4px 0px var(--c-dark-forest);
+      --shadow-brutal-lg: 6px 8px 0px var(--c-dark-forest);
+      --border-brutal: 1.5px solid var(--c-dark-forest);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--c-warm-cream);
+      color: var(--c-dark-forest);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--c-white);
+      border: 2px solid var(--c-dark-forest);
+      box-shadow: var(--shadow-brutal-lg);
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .badge-secure {
+      display: inline-block;
+      background: var(--c-dark-forest);
+      color: var(--c-warm-cream);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      border: 1.5px solid var(--c-dark-forest);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: 0.04em;
+      color: var(--c-dark-forest);
+      margin-bottom: 6px;
+    }
+
+    p.subtitle {
+      font-size: 0.88rem;
+      color: rgba(30, 54, 34, 0.75);
+      margin-bottom: 24px;
+    }
+
+    .alert-banner {
+      display: none;
+      background: #FFF4F2;
+      border: 1.5px solid var(--c-terracotta);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.84rem;
+      color: var(--c-terracotta-dark);
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: var(--c-dark-forest);
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      border: 1.5px solid var(--c-dark-forest);
+      border-radius: 12px;
+      background: var(--c-warm-cream);
+      color: var(--c-dark-forest);
+      outline: none;
+      box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05);
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    input:focus {
+      background: #FFFFFF;
+      border-color: var(--c-terracotta);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--c-terracotta);
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 14px;
+      border: 2px solid var(--c-dark-forest);
+      border-radius: 999px;
+      box-shadow: var(--shadow-brutal);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+
+    .btn-submit:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-brutal-lg);
+      background: var(--c-terracotta-dark);
+    }
+
+    .btn-submit:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0px var(--c-dark-forest);
+    }
+
+    .rate-limit-badge {
+      font-size: 0.76rem;
+      color: rgba(30, 54, 34, 0.65);
+      margin-top: 18px;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin-top: 24px;
+      color: var(--c-dark-forest);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <div style="margin-bottom: 16px;">
+      <img src="/assets/logo.svg" alt="SAJI Logo" width="100" height="42" style="height: 42px; width: auto;">
+    </div>
+    <span class="badge-secure">PORTAL ADMIN TERTUTUP</span>
+    <h1>MASUK DASHBOARD</h1>
+    <p class="subtitle">Autentikasi terenkripsi untuk manajemen operasional & audit keamanan SAJI.</p>
+
+    <div id="alertBanner" class="alert-banner"></div>
+
+    <form id="loginForm" method="POST" action="/api/auth/login">
+      <!-- Invisible Honeypot to detect bot exploitation -->
+      <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none; height: 0; width: 0; overflow: hidden;" aria-hidden="true">
+        <input type="text" name="admin_hp" id="adminHpField" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username / Email Resmi</label>
+        <input type="text" id="username" name="username" required autocomplete="username" maxlength="60" placeholder="Masukkan username resmi">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Kata Sandi (Password)</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" maxlength="100" placeholder="••••••••••••">
+      </div>
+
+      <button type="submit" id="btnSubmit" class="btn-submit">
+        MASUK KE DASHBOARD 🔒
+      </button>
+    </form>
+
+    <div class="rate-limit-badge">
+      🛡️ Rate Limiting Aktif: Maksimal 5 percobaan gagal per IP per 15 menit.
+    </div>
+
+    <a href="/" class="back-home">← Kembali ke Halaman Utama SAJI</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const alertBanner = document.getElementById('alertBanner');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    // Handle query string message (e.g. ?error=unauthorized or ?error=ratelimit)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'unauthorized') {
+      showAlert('Sesi Anda telah kedaluwarsa atau belum terotentikasi. Silakan masuk.');
+    } else if (urlParams.get('error') === 'rate_limit') {
+      showAlert('Terlalu banyak percobaan masuk gagal (Rate Limit). Coba lagi dalam 15 menit.');
+    }
+
+    function showAlert(msg) {
+      if (alertBanner) {
+        alertBanner.textContent = msg;
+        alertBanner.style.display = 'block';
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBanner.style.display = 'none';
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Memverifikasi...';
+
+      const hpField = document.getElementById('adminHpField');
+      if (hpField && hpField.value) {
+        showAlert('Aktivitas otomatis mencurigakan terdeteksi.');
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'MASUK KE DASHBOARD 🔒';
+        return;
+      }
+
+      const username = document.getElementById('username').value.replace(/[\x00-\x1F\x7F<>]/g, '').trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        showAlert('Username dan kata sandi wajib diisi.');
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'MASUK KE DASHBOARD 🔒';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password, admin_hp: hpField ? hpField.value : '' })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          window.location.href = data.redirect || '/admin';
+        } else {
+          if (res.status === 429) {
+            showAlert(data.error || 'Terlalu banyak percobaan masuk gagal. Silakan tunggu beberapa menit.');
+          } else {
+            showAlert(data.error || 'Kombinasi username atau password salah.');
+          }
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'MASUK KE DASHBOARD 🔒';
+        }
+      } catch (err) {
+        showAlert('Terjadi kesalahan koneksi server. Pastikan server aktif.');
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'MASUK KE DASHBOARD 🔒';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://sajibowl.id/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://sajibowl.id/assets/saji_sumba.jpg</image:loc>
+      <image:title>SAJI Bowl Sajian Sumba - Healthy Bowl Sorgum Organik</image:title>
+      <image:caption>Sajian Sumba berbahan dasar beras sorgum organik dari Sumba, bebas gluten dengan 425 kkal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://sajibowl.id/assets/saji_yogya.jpg</image:loc>
+      <image:title>SAJI Bowl Sajian Yogya - Healthy Bowl Ubi Ungu</image:title>
+      <image:caption>Sajian Yogya berbahan dasar ubi ungu alami kaya antioksidan dengan 360 kkal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://sajibowl.id/assets/saji_bogor.jpg</image:loc>
+      <image:title>SAJI Bowl Sajian Bogor - Healthy Bowl Kimpul Singkong</image:title>
+      <image:caption>Sajian Bogor berbahan dasar kimpul singkong lokal sumber energi dengan 420 kkal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://sajibowl.id/assets/saji_gulung_menu.png</image:loc>
+      <image:title>SAJI Wrap Sajian Gulung Yogya - Healthy Tortilla Wrap Ubi Ungu</image:title>
+      <image:caption>Sajian Gulung Yogya praktis on-the-go berbahan dasar ubi ungu dengan 340 kkal</image:caption>
+    </image:image>
+  </url>
+</urlset>
