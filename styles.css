@@ -1,3 +1,66 @@
+/* ==========================================================================
+   SELF-HOSTED WEB FONTS (WOFF2, same-origin) - loaded from /assets/fonts so the
+   SAJI display & body typefaces render identically on Windows, macOS, Linux and
+   behind networks that block fonts.googleapis.com / fonts.gstatic.com.
+   Google Fonts <link> in <head> stays as a secondary source (latin-ext etc.).
+   ========================================================================== */
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/anton.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/bebas-neue.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('assets/fonts/oswald-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('assets/fonts/fraunces-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/fraunces-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('assets/fonts/plus-jakarta-sans-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('assets/fonts/plus-jakarta-sans-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 
 
 :root {
@@ -18,9 +81,9 @@
   --c-muted-text: rgba(30, 54, 34, 0.72);
   --c-muted-cream: rgba(247, 245, 240, 0.75);
 
-  --font-display: 'Bebas Neue', 'Anton', sans-serif;
-  --font-serif: 'Fraunces', serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Bebas Neue', 'Anton', 'Oswald', Impact, 'Haettenschweiler', 'Arial Narrow Bold', 'Arial Narrow', sans-serif;
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   --shadow-brutal-sm: 2px 3px 0px var(--c-dark-forest);
   --shadow-brutal: 3px 4px 0px var(--c-dark-forest);
@@ -6298,4 +6361,369 @@ body.modal-open .btn-cart.is-floating-bottom,
   .craft-main-display { padding: 28px 24px; }
   .lifestyle-main-card { padding: 16px 24px; }
   .lifestyle-main-card[data-active-slide="3"] .lifestyle-main-img { padding-left: 52px; }
+}
+
+/* ==========================================================================
+   SAJI - UNIVERSAL LAPTOP & DESKTOP RESPONSIVENESS (>= 1025px)
+   Covers 1025px -> 2560px+, MacBook 13-16", Windows/Linux 13-17" laptops,
+   FHD/2K/4K monitors and Windows Display Scaling 125% / 150%
+   (effective viewports ~1092px-1280px wide x ~614px-768px tall).
+   Everything below is scoped to min-width: 1025px, so the Mobile & Tablet
+   layouts (max-width: 1024px) are NOT touched.
+   ========================================================================== */
+@media (min-width: 1025px) {
+
+  /* ---- Shared desktop container: 92% wide, capped at 1320px ---- */
+  .container {
+    width: 92%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* ---- 1. FLOATING PILL NAVBAR: logo left, [cart + hamburger] group right ---- */
+  .site-header {
+    top: 0;
+    padding: 0;
+  }
+
+  .navbar-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 92%;
+    max-width: 1320px;
+    margin: 16px auto;
+    padding: 10px clamp(18px, 2vw, 28px);
+    flex-wrap: nowrap;
+  }
+
+  .nav-brand {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+  }
+
+  .nav-brand-img {
+    height: clamp(36px, 3vw, 42px);
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .mobile-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* Cart + hamburger can never leave the navbar on laptop/desktop */
+  .navbar-pill .btn-cart,
+  .mobile-nav-actions .btn-cart,
+  .mobile-nav-actions .btn-cart.is-floating-bottom {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0;
+    border-width: 1.5px !important;
+    box-shadow: 2px 2px 0px var(--c-dark-forest) !important;
+    z-index: auto !important;
+  }
+
+  .mobile-toggle {
+    flex-shrink: 0;
+  }
+
+  /* ---- 2. HERO ---- */
+  .hero-section {
+    --hero-bowl: clamp(320px, 34vw, 480px);
+    min-height: clamp(640px, 92vh, 860px);
+    max-height: none;
+    padding-top: clamp(104px, 13vh, 130px);
+    padding-bottom: clamp(92px, 12vh, 120px);
+  }
+
+  .hero-grid {
+    width: 92%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1.12fr);
+    gap: 0 clamp(20px, 2.8vw, 36px);
+  }
+
+  .hero-col-left {
+    min-width: 0;
+    padding-top: clamp(16px, 3.4vh, 42px);
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 4.4vw, 4.8rem);
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-title .title-line-1,
+  .hero-title .title-line-2,
+  .hero-title .title-accent {
+    white-space: nowrap;
+  }
+
+  .hero-left-cta {
+    max-width: 440px;
+    margin-top: clamp(16px, 2.6vh, 26px);
+  }
+
+  .hero-desc {
+    max-width: 440px;
+  }
+
+  .hero-stats-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: clamp(20px, 2.4vw, 32px);
+    width: 100%;
+  }
+
+  .metric-item {
+    min-width: 0;
+  }
+
+  .hero-col-right {
+    min-width: 0;
+  }
+
+  .hero-products-stage {
+    min-height: var(--hero-bowl);
+  }
+
+  .hero-composition-cluster {
+    width: calc(var(--hero-bowl) * 1.4);
+    max-width: none;
+    height: var(--hero-bowl);
+    flex-shrink: 0;
+    margin-bottom: 20px;
+  }
+
+  .hero-bowl-pod {
+    left: 0;
+    width: var(--hero-bowl);
+    height: var(--hero-bowl);
+  }
+
+  .hero-wrap-pod {
+    right: calc(var(--hero-bowl) * 0.05);
+    top: calc(var(--hero-bowl) * -0.05);
+    width: calc(var(--hero-bowl) * 0.7);
+    height: calc(var(--hero-bowl) * 0.906);
+  }
+
+  .hero-section .marquee-ribbon-wrapper {
+    bottom: 16px;
+    z-index: 20;
+  }
+
+  /* ---- 3. ABOUT US: tabs 01-04 never collide with their numbers ---- */
+  .craft-step-bar {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .craft-step-bar .step-selector-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    min-width: 0;
+  }
+
+  .craft-step-bar .step-btn-info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .craft-step-bar .step-btn-title {
+    font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+
+  .craft-step-bar .step-btn-num {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    font-size: clamp(1.3rem, 1.7vw, 1.6rem);
+    line-height: 1;
+  }
+
+  /* ---- 4. "MAKAN SEHAT TETAP NIKMAT SETIAP HARI." (TRIO BOWL) ---- */
+  .lifestyle-showcase {
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 4vw, 56px);
+  }
+
+  .lifestyle-content-left {
+    flex: 0 0 42%;
+    max-width: 42%;
+    min-width: 0;
+  }
+
+  .lifestyle-showcase .section-headline {
+    font-size: clamp(2.6rem, 4vw, 4.2rem);
+    line-height: 0.98;
+    white-space: nowrap;
+  }
+
+  .lifestyle-visual-right {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 640px;
+    margin-left: auto;
+  }
+
+  /* ---- 5. KATALOG MENU: 4 balanced cards ---- */
+  .catalog-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 24px);
+    align-items: stretch;
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .product-card,
+  .product-card.active {
+    min-height: 0;
+    min-width: 0;
+    justify-content: flex-start;
+    padding-left: clamp(14px, 1.5vw, 22px);
+    padding-right: clamp(14px, 1.5vw, 22px);
+  }
+
+  .product-card.active {
+    transform: none;
+  }
+
+  .product-card.active:hover {
+    transform: translateY(-6px);
+  }
+
+  .card-body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-size: clamp(1.25rem, 1.65vw, 1.65rem);
+    line-height: 1.1;
+    min-height: 2.2em;
+    display: flex;
+    align-items: flex-end;
+    overflow-wrap: break-word;
+  }
+
+  .card-components-detail {
+    flex: 1 1 auto;
+  }
+
+  .card-macros-row {
+    flex: 0 0 auto;
+    min-height: 4.4em;
+    align-content: flex-start;
+  }
+
+  .card-footer-cta {
+    margin-top: auto;
+    padding-top: 6px;
+  }
+
+  .card-product-img {
+    width: clamp(160px, 15vw, 195px);
+    height: clamp(160px, 15vw, 195px);
+  }
+
+  .product-card.active .card-product-img {
+    width: clamp(172px, 15.5vw, 215px);
+    height: clamp(172px, 15.5vw, 215px);
+  }
+
+  /* ---- 6. CONTACT & FOOTER ---- */
+  .footer-main-container {
+    padding-top: 90px;
+    padding-bottom: 60px;
+  }
+
+  .footer-upper-split {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(28px, 4vw, 50px);
+  }
+
+  /* Trio composition scales with its column (positions are % of a 440x380 canvas) */
+  .footer-floating-composition {
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    aspect-ratio: 440 / 380;
+    justify-self: start;
+  }
+
+  .footer-comp-bowl {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+
+  .footer-comp-bowl.bowl-bogor {
+    left: 2.3%;
+    top: 9.2%;
+    width: 45.5%;
+    height: auto;
+  }
+
+  .footer-comp-bowl.bowl-sumba {
+    left: 30.7%;
+    top: 28.9%;
+    width: 50%;
+    height: auto;
+  }
+
+  .footer-comp-bowl.bowl-yogya {
+    left: 55.7%;
+    top: 6.6%;
+    width: 42%;
+    height: auto;
+  }
+
+  .footer-bento-grid {
+    min-width: 0;
+  }
+
+  .bento-row-top {
+    align-items: stretch;
+  }
+
+  .bento-card-location {
+    min-width: 0;
+  }
+
+  .footer-nav-row {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.3fr);
+  }
+}
+
+/* Short laptop screens (e.g. Windows 125%/150% scaling => ~614-768px tall):
+   keep the whole hero composition inside one screen */
+@media (min-width: 1025px) and (max-height: 760px) {
+  .hero-section {
+    --hero-bowl: clamp(300px, min(34vw, calc(100vh - 300px)), 480px);
+  }
 }

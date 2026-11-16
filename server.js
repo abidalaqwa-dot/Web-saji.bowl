@@ -101,6 +101,13 @@ const mimeTypes = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.svg': 'image/svg+xml',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.gif': 'image/gif',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.ttf': 'font/ttf',
+  '.otf': 'font/otf',
   '.ico': 'image/x-icon',
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml; charset=utf-8'
@@ -422,7 +429,14 @@ async function requestHandler(req, res) {
     }
 
     // General Rate Limit per IP (120 req / min)
-    const generalLimit = checkRateLimit(clientIp, 'general', 120, 60 * 1000);
+    // Static assets (images, fonts, css, js) use their own generous bucket so a single
+    // page load (30+ images + fonts) never exhausts the 120 req/min page/API budget and
+    // never turns into broken images / missing fonts (HTTP 429 JSON) on shared-IP networks.
+    const isStaticAssetRequest = (req.method === 'GET' || req.method === 'HEAD') &&
+      (pathname.startsWith('/assets/') || /\.(?:css|js|png|jpe?g|svg|webp|avif|gif|ico|woff2?|ttf|otf)$/i.test(pathname));
+    const generalLimit = isStaticAssetRequest
+      ? checkRateLimit(clientIp, 'static', 3000, 60 * 1000)
+      : checkRateLimit(clientIp, 'general', 120, 60 * 1000);
     if (!generalLimit.allowed) {
       res.writeHead(429, {
         'Content-Type': 'application/json; charset=utf-8',

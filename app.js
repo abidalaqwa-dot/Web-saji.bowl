@@ -65,9 +65,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 0. IMAGE ASSET INTEGRITY & SILENT FALLBACK SYSTEM
   // --------------------------------------------------------------------------
+  // Inline (data: URI) SAJI wordmark: last-resort image that can never 404 / be rate-limited.
+  const INLINE_LOGO_SRC = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" width="120" height="48">' +
+    '<text x="60" y="32" text-anchor="middle" font-family="Impact,Haettenschweiler,Arial Narrow Bold,sans-serif" ' +
+    'font-size="30" font-weight="700" fill="#C85A32" letter-spacing="1">SAJI</text>' +
+    '<text x="60" y="44" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" fill="#1E3622">Sajian Healthy Bowl</text></svg>'
+  );
+
+  // Recovery ladder for a failed <img>: (1) retry the same file twice with a cache-buster
+  // (covers transient 429 / network hiccups / stale CDN), (2) swap to the brand logo file,
+  // (3) swap to the inline data-URI logo. A broken-image icon / raw alt text is never left on screen.
   function applyImgFallback(img) {
-    if (!img || String(img.getAttribute('src') || '').endsWith('assets/logo.svg')) return;
-    img.src = 'assets/logo.svg';
+    if (!img) return;
+    const src = String(img.getAttribute('src') || '');
+    if (src.startsWith('data:')) return;
+    const retries = Number(img.dataset.sajiRetry || 0);
+    if (retries < 2 && !img.dataset.sajiFallback) {
+      img.dataset.sajiRetry = String(retries + 1);
+      const base = src.split('?')[0];
+      const t = setTimeout(() => { img.src = base + '?r=' + retries + '-' + Date.now(); }, 500 * (retries + 1));
+      activeTimeouts.add(t);
+      return;
+    }
+    if (!img.dataset.sajiFallback) {
+      img.dataset.sajiFallback = 'logo';
+      img.src = 'assets/logo.svg';
+    } else {
+      img.src = INLINE_LOGO_SRC;
+    }
     img.alt = 'SAJI Healthy Bowl';
     img.style.objectFit = 'contain';
     img.style.padding = '6px';
@@ -77,8 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', function onImgError() {
       applyImgFallback(this);
-    }, { once: true, signal: sig });
-    if (img.complete && img.naturalWidth === 0) applyImgFallback(img);
+    }, { signal: sig });
+    const isVector = /\.svg(\?|$)/i.test(String(img.getAttribute('src') || ''));
+    if (img.complete && img.naturalWidth === 0 && !isVector && img.getAttribute('src')) applyImgFallback(img);
   });
 
   // --------------------------------------------------------------------------
@@ -367,11 +394,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // DYNAMIC CART RELOCATION CONTROLLER (Navbar Top-Right <-> Screen Bottom-Right)
   // --------------------------------------------------------------------------
+  // Laptop/desktop (>= 1025px): the cart icon is LOCKED inside the floating navbar (never relocated
+  // to the bottom-right corner). Mobile/tablet (<= 1024px) keeps the original floating-cart behaviour.
+  const desktopNavMQ = window.matchMedia('(min-width: 1025px)');
+  let cartWantsFloating = false;
+
   function setFloatingCart(isFloating) {
+    cartWantsFloating = Boolean(isFloating);
     const targetCartBtn = document.querySelector('.btn-cart');
     const navActions = document.querySelector('.mobile-nav-actions');
     const mobileToggle = $('mobileToggle');
     if (!targetCartBtn) return;
+    if (desktopNavMQ.matches) isFloating = false;
 
     if (isFloating) {
       targetCartBtn.classList.add('is-floating-bottom');
@@ -381,6 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (navActions && mobileToggle && targetCartBtn.parentElement !== navActions) navActions.insertBefore(targetCartBtn, mobileToggle);
     }
   }
+
+  desktopNavMQ.addEventListener('change', () => setFloatingCart(cartWantsFloating), { signal: sig });
 
   if (modalAddToCartBtn) {
     modalAddToCartBtn.addEventListener('click', () => {
@@ -1244,10 +1280,26 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.unobserve(entry.target);
           }
         });
-      }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.12 });
+      }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.01 });
 
       activeObservers.add(observer);
       targets.forEach((el) => observer.observe(el));
+
+      // Failsafe: if IntersectionObserver is slow / throttled (some laptops, background tabs, high DPI scaling),
+      // never leave content stuck at opacity: 0 - reveal everything already in or above the viewport.
+      const revealVisibleNow = () => {
+        targets.forEach((el) => {
+          if (el.classList.contains('is-revealed')) return;
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight * 1.05) {
+            el.classList.add('is-revealed');
+            observer.unobserve(el);
+          }
+        });
+      };
+      [900, 2200, 4500].forEach((ms) => activeTimeouts.add(setTimeout(revealVisibleNow, ms)));
+      window.addEventListener('scroll', revealVisibleNow, { passive: true, signal: sig });
+      window.addEventListener('resize', revealVisibleNow, { passive: true, signal: sig });
     } else {
       targets.forEach((el) => el.classList.add('is-revealed'));
       if (!craftHasAnimatedOnce) {
