@@ -747,7 +747,7 @@
 
           <!-- Right Column Lifestyle Frame with 01/02/03 Selector Dots -->
           <div class="lifestyle-visual-right">
-            <div class="lifestyle-main-card">
+            <div class="lifestyle-main-card" data-active-slide="1">
               <!-- Selector Dots Inside Left Edge -->
               <div class="lifestyle-dots">
                 <button class="lifestyle-dot-btn active" data-img-index="0" aria-label="Lihat ilustrasi gaya hidup sehat 01">01</button>
@@ -755,7 +755,69 @@
                 <button class="lifestyle-dot-btn" data-img-index="2" aria-label="Lihat variasi saus artisanal 03">03</button>
               </div>
 
-              <img src="assets/lifestyle_1.svg" alt="Gaya Hidup Sehat SAJI - Makanan sehat bergizi dan cita rasa Nusantara" class="lifestyle-main-img" id="lifestyleMainImg" loading="lazy" decoding="async" width="480" height="480">
+              <!-- Slide 01: SAJI Trio Bowl -->
+              <div class="lifestyle-slide lifestyle-slide-1 is-active" data-slide="1">
+                <div class="ls-canvas ls-canvas-trio">
+                  <div class="ls-trio-cluster">
+                    <div class="ls-ring ls-ring-outer" aria-hidden="true"></div>
+                    <div class="ls-ring ls-ring-inner" aria-hidden="true"></div>
+
+                    <div class="ls-bowl ls-bowl-sumba">
+                      <span class="ls-pill ls-pill-sumba">SAJIAN SUMBA</span>
+                      <div class="ls-medallion ls-medallion-sumba">
+                        <img src="assets/sumba_square.jpg" alt="Sajian Sumba Healthy Bowl" class="ls-food-img" width="896" height="896" loading="eager" decoding="sync">
+                      </div>
+                    </div>
+
+                    <div class="ls-trio-bottom-row">
+                      <div class="ls-trio-hub">
+                        <span class="ls-hub-brand">SAJI</span>
+                        <span class="ls-hub-sub">TRIO BOWL</span>
+                      </div>
+
+                      <div class="ls-bowl ls-bowl-yogya">
+                        <div class="ls-medallion ls-medallion-yogya">
+                          <img src="assets/yogya_square.jpg" alt="Sajian Yogya Healthy Bowl" class="ls-food-img" width="896" height="896" loading="eager" decoding="sync">
+                        </div>
+                        <span class="ls-pill ls-pill-yogya">SAJIAN YOGYA</span>
+                      </div>
+
+                      <div class="ls-bowl ls-bowl-bogor">
+                        <div class="ls-medallion ls-medallion-bogor">
+                          <img src="assets/bogor_square.jpg" alt="Sajian Bogor Healthy Bowl" class="ls-food-img" width="896" height="896" loading="eager" decoding="sync">
+                        </div>
+                        <span class="ls-pill ls-pill-bogor">SAJIAN BOGOR</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ls-tagline-pill">FLAVORFUL &bull; FRESH &bull; NUSANTARA SOUL</div>
+                </div>
+              </div>
+
+              <!-- Slide 02: Sajian Gulung Yogya Purple Wrap -->
+              <div class="lifestyle-slide lifestyle-slide-2" data-slide="2" hidden>
+                <div class="ls-canvas ls-canvas-wrap">
+                  <div class="ls-wrap-glow" aria-hidden="true"></div>
+                  <div class="ls-wrap-frame">
+                    <div class="ls-wrap-ring-dashed" aria-hidden="true"></div>
+                    <div class="ls-wrap-medallion">
+                      <img src="assets/saji_gulung_menu.png" alt="Sajian Gulung Yogya Purple Wrap SAJI" class="ls-wrap-img" width="800" height="800" loading="eager" decoding="sync">
+                    </div>
+                  </div>
+                  <div class="ls-wrap-pill">SAJIAN GULUNG YOGYA &bull; PURPLE WRAP</div>
+                </div>
+              </div>
+
+              <!-- Slide 03: Varian Sauce -->
+              <div class="lifestyle-slide lifestyle-slide-3" data-slide="3" hidden>
+                <div class="ls-canvas ls-canvas-sauces">
+                  <div class="ls-sauces-pill">VARIAN SAUCE</div>
+                  <div class="ls-sauces-frame">
+                    <img src="assets/saji_sauces.png" alt="4 Varian Saus Artisanal SAJI - Kecombrang, Kacang Mede, Kemangi, Wijaya Wijen" class="ls-sauces-img" width="1024" height="362" loading="eager" decoding="sync">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

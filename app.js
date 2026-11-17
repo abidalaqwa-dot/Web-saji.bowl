@@ -651,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. ABOUT US: BRAND LIFESTYLE IMAGE SWITCHER (SECTION 2B)
   // --------------------------------------------------------------------------
   const lifestyleDots = document.querySelectorAll('.lifestyle-dot-btn');
-  const lifestyleMainImg = $('lifestyleMainImg');
+  const lifestyleSlides = document.querySelectorAll('.lifestyle-slide');
   const lifestyleCard = document.querySelector('.lifestyle-main-card');
   const lifestyleTagCluster = $('lifestyleTagCluster');
   const lifestyleSaucesPanel = $('lifestyleSaucesPanel');
@@ -663,10 +663,21 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.add('animate-in');
   }
 
-  const lifestyleImages = ['assets/lifestyle_1.svg', 'assets/lifestyle_2.svg', 'assets/lifestyle_3.svg'];
+  function showLifestyleSlide(activeIdx) {
+    lifestyleSlides.forEach((slide, sIdx) => {
+      const isMatch = sIdx === activeIdx;
+      slide.classList.remove('is-active');
+      slide.hidden = !isMatch;
+      if (isMatch) {
+        void slide.offsetWidth;
+        slide.classList.add('is-active');
+      }
+    });
+  }
 
   restartAnim(lifestyleTagCluster);
   if (lifestyleCard) lifestyleCard.setAttribute('data-active-slide', '1');
+  showLifestyleSlide(0);
 
   lifestyleDots.forEach((dot, idx) => {
     dot.addEventListener('click', () => {
@@ -685,7 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
         restartAnim(isThird ? lifestyleSaucesPanel : lifestyleTagCluster);
       }
 
-      fadeSwap(lifestyleMainImg, 'life', () => { lifestyleMainImg.src = lifestyleImages[idx]; });
+      showLifestyleSlide(idx);
     });
   });
 

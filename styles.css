@@ -180,8 +180,7 @@ button {
   aspect-ratio: 280 / 360;
 }
 
-.card-product-img,
-.lifestyle-main-img {
+.card-product-img {
   aspect-ratio: 1 / 1;
 }
 
@@ -2022,6 +2021,7 @@ body.modal-open .btn-cart.is-floating-bottom,
   gap: 50px;
   align-items: center;
   position: relative;
+  z-index: 2;
 }
 
 .lifestyle-content-left {
@@ -2205,6 +2205,7 @@ body.modal-open .btn-cart.is-floating-bottom,
 
 .lifestyle-main-card {
   position: relative;
+  z-index: 2;
   width: 100%;
   height: 440px;
   border-radius: 28px;
@@ -2215,12 +2216,346 @@ body.modal-open .btn-cart.is-floating-bottom,
   transition: background-color var(--transition-smooth);
 }
 
-.lifestyle-main-img {
+.lifestyle-main-card .lifestyle-dots {
+  z-index: 10;
+}
+
+/* Native HTML + Retina HD Lifestyle Slides (Section 2B) */
+.lifestyle-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lifestyle-slide[hidden] {
+  display: none !important;
+}
+
+@keyframes lifestyleSlideIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.lifestyle-slide.is-active {
+  animation: lifestyleSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ls-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 18px 24px 18px 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Slide 01: Trio Bowl */
+.ls-canvas-trio {
+  gap: 14px;
+}
+
+.ls-trio-cluster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ls-ring {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ls-ring-outer {
+  width: 244px;
+  height: 244px;
+  border: 1.5px dashed rgba(241, 190, 96, 0.32);
+}
+
+.ls-ring-inner {
+  width: 148px;
+  height: 148px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.ls-bowl {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.ls-bowl-sumba {
+  margin-bottom: -14px;
+}
+
+.ls-trio-bottom-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 18px;
+  z-index: 2;
+}
+
+.ls-medallion {
+  position: relative;
+  width: 142px;
+  height: 142px;
+  border-radius: 50%;
+  padding: 2px;
+  background-color: #ffffff;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.34);
+  z-index: 1;
+}
+
+.ls-medallion-sumba {
+  border: 3px solid #ebc05e;
+}
+
+.ls-medallion-yogya {
+  border: 3px solid #764285;
+}
+
+.ls-medallion-bogor {
+  border: 3px solid #2e8540;
+}
+
+.ls-food-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.ls-pill {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px;
+  border-radius: 999px;
+  border: 2px solid #fdfcf7;
+  color: #fdfcf7;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32);
+}
+
+.ls-pill-sumba {
+  background-color: #c85228;
+  margin-bottom: -11px;
+}
+
+.ls-pill-yogya {
+  background-color: #703b7c;
+  margin-top: -12px;
+}
+
+.ls-pill-bogor {
+  background-color: #32833c;
+  margin-top: -12px;
+}
+
+.ls-trio-hub {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background-color: #163319;
+  border: 2.5px solid #f1be60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.42);
+  z-index: 6;
+  pointer-events: none;
+}
+
+.ls-hub-brand {
+  color: #f1be60;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 0.78rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.ls-hub-sub {
+  color: #fdfcf7;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.5rem;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.ls-tagline-pill {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px;
+  border-radius: 999px;
+  background-color: #f1be60;
+  color: #1b3b1e;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+}
+
+/* Slide 02: Sajian Gulung Yogya Purple Wrap */
+.ls-canvas-wrap {
+  gap: 20px;
+}
+
+.ls-wrap-glow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(241, 190, 96, 0.16) 0%, rgba(27, 59, 30, 0) 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ls-wrap-frame {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ls-wrap-ring-dashed {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(241, 190, 96, 0.45);
+  pointer-events: none;
+}
+
+.ls-wrap-medallion {
+  position: relative;
+  width: 244px;
+  height: 244px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 4px solid #f1be60;
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+}
+
+.ls-wrap-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 10px;
-  transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+  display: block;
+}
+
+.ls-wrap-pill {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  border-radius: 999px;
+  background-color: #c85228;
+  border: 2px solid #fdfcf7;
+  color: #fdfcf7;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+}
+
+/* Slide 03: Varian Sauce */
+.ls-canvas-sauces {
+  gap: 16px;
+}
+
+.ls-sauces-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px;
+  border-radius: 999px;
+  background-color: #f1be60;
+  border: 2px solid #fdfcf7;
+  color: #1b3b1e;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.ls-sauces-frame {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ls-sauces-img {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  display: block;
+  -webkit-clip-path: inset(0 3px 0 0);
+  clip-path: inset(0 3px 0 0);
 }
 
 .lifestyle-dots {
@@ -2247,8 +2582,9 @@ body.modal-open .btn-cart.is-floating-bottom,
   justify-content: center;
   background-color: rgba(20, 38, 23, 0.7);
   color: var(--c-warm-cream);
-  backdrop-filter: blur(4px);
-  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .lifestyle-dot-btn.active,
@@ -4618,7 +4954,8 @@ body.modal-open .btn-cart.is-floating-bottom,
 
   .lifestyle-main-card {
     height: auto;
-    padding: 14px 0;
+    min-height: clamp(248px, 68vw, 350px);
+    padding: 0;
     overflow: hidden;
     position: relative;
     display: block;
@@ -4632,26 +4969,125 @@ body.modal-open .btn-cart.is-floating-bottom,
   }
 
   .lifestyle-dot-btn {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
-    font-size: 0.72rem;
+    width: clamp(28px, 8vw, 34px);
+    height: clamp(28px, 8vw, 34px);
+    min-width: 28px;
+    min-height: 28px;
+    font-size: clamp(0.66rem, 2vw, 0.74rem);
   }
 
-  .lifestyle-main-img {
-    display: block;
-    padding: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    aspect-ratio: 640 / 480 !important;
-    transform: none !important;
+  .lifestyle-slide {
+    min-height: clamp(244px, 67vw, 346px);
   }
 
-  .lifestyle-main-card[data-active-slide="3"] .lifestyle-main-img,
-  .lifestyle-main-img[src*="lifestyle_3"] {
-    padding: 0 8px 0 46px !important;
+  .ls-canvas {
+    padding: clamp(14px, 3.6vw, 22px) clamp(10px, 2.8vw, 18px) clamp(14px, 3.6vw, 22px) clamp(42px, 12vw, 56px);
+  }
+
+  .ls-canvas-trio {
+    gap: clamp(10px, 2.6vw, 14px);
+  }
+
+  .ls-ring-outer {
+    width: clamp(148px, 43vw, 230px);
+    height: clamp(148px, 43vw, 230px);
+  }
+
+  .ls-ring-inner {
+    width: clamp(90px, 26vw, 140px);
+    height: clamp(90px, 26vw, 140px);
+  }
+
+  .ls-bowl-sumba {
+    margin-bottom: clamp(-12px, -2.5vw, -8px);
+  }
+
+  .ls-trio-bottom-row {
+    gap: clamp(8px, 3vw, 18px);
+  }
+
+  .ls-medallion {
+    width: clamp(86px, 25vw, 134px);
+    height: clamp(86px, 25vw, 134px);
+    border-width: 2.5px;
+    padding: 2px;
+  }
+
+  .ls-trio-hub {
+    width: clamp(44px, 12.5vw, 62px);
+    height: clamp(44px, 12.5vw, 62px);
+    border-width: 2px;
+  }
+
+  .ls-hub-brand {
+    font-size: clamp(0.54rem, 1.8vw, 0.74rem);
+  }
+
+  .ls-hub-sub {
+    font-size: clamp(0.36rem, 1.15vw, 0.48rem);
+  }
+
+  .ls-pill {
+    padding: clamp(3px, 0.9vw, 5px) clamp(8px, 2.3vw, 14px);
+    font-size: clamp(0.5rem, 1.75vw, 0.68rem);
+    border-width: 1.5px;
+  }
+
+  .ls-pill-sumba {
+    margin-bottom: clamp(-10px, -2vw, -7px);
+  }
+
+  .ls-pill-yogya,
+  .ls-pill-bogor {
+    margin-top: clamp(-10px, -2vw, -7px);
+  }
+
+  .ls-tagline-pill {
+    padding: clamp(5px, 1.5vw, 8px) clamp(10px, 3.2vw, 22px);
+    font-size: clamp(0.52rem, 1.85vw, 0.74rem);
+    letter-spacing: 0.05em;
+    max-width: 100%;
+  }
+
+  .ls-canvas-wrap {
+    gap: clamp(12px, 3.5vw, 18px);
+  }
+
+  .ls-wrap-glow {
+    width: clamp(200px, 56vw, 300px);
+    height: clamp(200px, 56vw, 300px);
+  }
+
+  .ls-wrap-ring-dashed {
+    inset: -10px;
+  }
+
+  .ls-wrap-medallion {
+    width: clamp(150px, 44vw, 220px);
+    height: clamp(150px, 44vw, 220px);
+    padding: clamp(10px, 2.8vw, 14px);
+    border-width: 3px;
+  }
+
+  .ls-wrap-pill {
+    padding: clamp(6px, 1.8vw, 8px) clamp(12px, 3.4vw, 22px);
+    font-size: clamp(0.54rem, 1.9vw, 0.74rem);
+    letter-spacing: 0.05em;
+    border-width: 1.5px;
+  }
+
+  .ls-canvas-sauces {
+    gap: clamp(10px, 3vw, 16px);
+  }
+
+  .ls-sauces-pill {
+    padding: clamp(5px, 1.5vw, 8px) clamp(14px, 4vw, 22px);
+    font-size: clamp(0.58rem, 2vw, 0.76rem);
+    border-width: 1.5px;
+  }
+
+  .ls-sauces-img {
+    max-height: clamp(130px, 36vw, 240px);
   }
 
   .lifestyle-sauces-panel {
@@ -6207,7 +6643,7 @@ body.modal-open .btn-cart.is-floating-bottom,
 
 .lifestyle-showcase.reveal-init.is-revealed .lifestyle-main-card {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: none;
 }
 
 .product-card.reveal-init {
@@ -6359,8 +6795,11 @@ body.modal-open .btn-cart.is-floating-bottom,
     padding: 10px 28px 8px;
   }
   .craft-main-display { padding: 28px 24px; }
-  .lifestyle-main-card { padding: 16px 24px; }
-  .lifestyle-main-card[data-active-slide="3"] .lifestyle-main-img { padding-left: 52px; }
+  .lifestyle-main-card { height: auto; min-height: 410px; padding: 0; }
+  .lifestyle-slide { min-height: 404px; }
+  .ls-canvas { padding: 18px 20px 18px 58px; }
+  .ls-medallion { width: clamp(108px, 16.5vw, 140px); height: clamp(108px, 16.5vw, 140px); }
+  .ls-wrap-medallion { width: clamp(190px, 28vw, 232px); height: clamp(190px, 28vw, 232px); }
 }
 
 /* ==========================================================================
