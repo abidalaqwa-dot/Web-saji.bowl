@@ -7139,28 +7139,20 @@ body.modal-open .btn-cart.is-floating-bottom,
   min-width: 0;
 }
 
-.review-field-card {
+.review-unified-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: #E3ECD9;
   border: 1.5px solid var(--c-dark-forest);
-  border-radius: 16px;
-  padding: 12px 14px;
-  box-shadow: 2px 3px 0px var(--c-dark-forest);
-  justify-content: space-between;
+  border-radius: 22px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-brutal);
 }
 
-.review-field-card.card-rating {
-  background-color: #FCEECA;
-}
-
-.review-field-card.card-name {
-  background-color: var(--c-soft-oatmeal);
-}
-
-.review-field-card.card-menu {
-  background-color: #F3E2D2;
-}
-
-.review-field-card.card-quote {
-  background-color: #F7DFD1;
+.review-unified-section {
+  padding-top: 13px;
+  border-top: 1.5px dashed rgba(30, 54, 34, 0.2);
 }
 
 .review-field-label {
@@ -7222,7 +7214,7 @@ body.modal-open .btn-cart.is-floating-bottom,
   min-height: 44px;
   padding: 6px 12px;
   border-radius: 12px;
-  background-color: #FFF8E6;
+  background-color: #FAF7F0;
   border: var(--border-brutal);
 }
 
@@ -7285,14 +7277,14 @@ body.modal-open .btn-cart.is-floating-bottom,
 
 .review-input {
   min-height: 44px;
-  background-color: #F7F3E8;
+  background-color: #FAF7F0;
 }
 
 .review-textarea {
   resize: vertical;
   min-height: 82px;
   line-height: 1.48;
-  background-color: #FFF7F1;
+  background-color: #FAF7F0;
 }
 
 .review-input:focus,
@@ -7310,7 +7302,7 @@ body.modal-open .btn-cart.is-floating-bottom,
 .review-menu-chip {
   padding: 6px 13px;
   border-radius: 999px;
-  background-color: #FBF3E8;
+  background-color: #FAF7F0;
   border: 1.5px solid rgba(30, 54, 34, 0.38);
   font-size: 0.75rem;
   font-weight: 800;
@@ -7442,9 +7434,10 @@ body.modal-open .btn-cart.is-floating-bottom,
     gap: 16px;
   }
 
-  .review-field-card {
-    padding: 12px;
-    border-radius: 14px;
+  .review-unified-card {
+    padding: 14px;
+    border-radius: 18px;
+    gap: 12px;
   }
 
   .btn-review-submit {
@@ -7487,8 +7480,13 @@ body.modal-open .btn-cart.is-floating-bottom,
     gap: 10px;
   }
 
-  .saji-modal-card.review-modal-card .review-field-card {
-    padding: 9px 12px;
+  .saji-modal-card.review-modal-card .review-unified-card {
+    padding: 13px 16px;
+    gap: 10px;
+  }
+
+  .saji-modal-card.review-modal-card .review-unified-section {
+    padding-top: 9px;
   }
 
   .saji-modal-card.review-modal-card .review-field-label {

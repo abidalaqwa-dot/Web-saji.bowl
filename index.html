@@ -986,7 +986,7 @@
             </div>
 
             <h3 class="spotlight-quote-text" id="spotlightQuote">
-              "JADILAH YANG PERTAMA BERBAGI CERITA &amp; RASA FAVORITMU BERSAMA SAJI!"
+              "SUDAH COBA SAJI HARI INI? YUK, CERITAIN PENGALAMAN &amp; RASA FAVORITMU DI SINI!"
             </h3>
 
             <div class="spotlight-footer-row">
@@ -1674,56 +1674,58 @@
             </div>
           </div>
 
-          <!-- Right Column: Rating, Nama, Menu & Review Box -->
+          <!-- Right Column: Unified Form Card (Rating, Nama, Menu & Review) -->
           <div class="review-fields-column">
-            <div class="review-form-row-top">
-              <div class="review-field-group review-field-card card-rating">
-                <span class="review-field-label">
-                  <span class="review-field-pill pill-ochre">RATING KAMU <span class="review-required-mark">*</span></span>
-                </span>
-                <div class="review-star-picker" id="reviewStarPicker" role="radiogroup" aria-label="Pilih Rating Bintang">
-                  <div class="star-buttons-row">
-                    <button type="button" class="star-pick-btn" data-star="1" role="radio" aria-checked="false" aria-label="Bintang 1">☆</button>
-                    <button type="button" class="star-pick-btn" data-star="2" role="radio" aria-checked="false" aria-label="Bintang 2">☆</button>
-                    <button type="button" class="star-pick-btn" data-star="3" role="radio" aria-checked="false" aria-label="Bintang 3">☆</button>
-                    <button type="button" class="star-pick-btn" data-star="4" role="radio" aria-checked="false" aria-label="Bintang 4">☆</button>
-                    <button type="button" class="star-pick-btn" data-star="5" role="radio" aria-checked="false" aria-label="Bintang 5">☆</button>
+            <div class="review-unified-card">
+              <div class="review-form-row-top">
+                <div class="review-field-group">
+                  <span class="review-field-label">
+                    <span class="review-field-pill pill-ochre">RATING KAMU <span class="review-required-mark">*</span></span>
+                  </span>
+                  <div class="review-star-picker" id="reviewStarPicker" role="radiogroup" aria-label="Pilih Rating Bintang">
+                    <div class="star-buttons-row">
+                      <button type="button" class="star-pick-btn" data-star="1" role="radio" aria-checked="false" aria-label="Bintang 1">☆</button>
+                      <button type="button" class="star-pick-btn" data-star="2" role="radio" aria-checked="false" aria-label="Bintang 2">☆</button>
+                      <button type="button" class="star-pick-btn" data-star="3" role="radio" aria-checked="false" aria-label="Bintang 3">☆</button>
+                      <button type="button" class="star-pick-btn" data-star="4" role="radio" aria-checked="false" aria-label="Bintang 4">☆</button>
+                      <button type="button" class="star-pick-btn" data-star="5" role="radio" aria-checked="false" aria-label="Bintang 5">☆</button>
+                    </div>
+                    <span class="star-pick-label" id="reviewStarLabel">Pilih bintang</span>
                   </div>
-                  <span class="star-pick-label" id="reviewStarLabel">Pilih bintang</span>
+                </div>
+
+                <div class="review-field-group review-name-group">
+                  <label class="review-field-label" for="reviewInputName">
+                    <span class="review-field-pill pill-sage">NAMA</span>
+                    <span class="optional-badge">Opsional</span>
+                  </label>
+                  <input type="text" id="reviewInputName" class="review-input" maxlength="48" placeholder="Nama kamu (opsional = Anonim)" autocomplete="name">
                 </div>
               </div>
 
-              <div class="review-field-group review-field-card card-name review-name-group">
-                <label class="review-field-label" for="reviewInputName">
-                  <span class="review-field-pill pill-sage">NAMA</span>
-                  <span class="optional-badge">Opsional</span>
+              <div class="review-field-group review-unified-section">
+                <span class="review-field-label">
+                  <span class="review-field-pill pill-forest">MENU YANG DIREVIEW</span>
+                </span>
+                <div class="review-menu-chips" id="reviewMenuChips" role="group" aria-label="Pilih Menu SAJI">
+                  <button type="button" class="review-menu-chip active" data-menu="Semua Menu SAJI">Semua Menu</button>
+                  <button type="button" class="review-menu-chip" data-menu="Sajian Sumba">Sajian Sumba</button>
+                  <button type="button" class="review-menu-chip" data-menu="Sajian Bogor">Sajian Bogor</button>
+                  <button type="button" class="review-menu-chip" data-menu="Sajian Yogya">Sajian Yogya</button>
+                  <button type="button" class="review-menu-chip" data-menu="Sajian Gulung Yogya">Sajian Gulung Yogya</button>
+                </div>
+              </div>
+
+              <div class="review-field-group review-unified-section">
+                <label class="review-field-label" for="reviewInputQuote">
+                  <span class="review-field-pill pill-terracotta">TULIS REVIEW KAMU <span class="review-required-mark-light">*</span></span>
                 </label>
-                <input type="text" id="reviewInputName" class="review-input" maxlength="48" placeholder="Nama kamu (opsional = Anonim)" autocomplete="name">
+                <textarea id="reviewInputQuote" class="review-textarea" rows="3" maxlength="220" required placeholder="Ceritakan pengalamanmu makan SAJI (contoh: Ubi ungunya lembut, porsinya pas, bikin kenyang sehat!)"></textarea>
+                <div class="review-textarea-meta">
+                  <span class="review-char-count" id="reviewCharCount">0 / 220</span>
+                </div>
+                <div class="review-error-msg" id="reviewErrorMsg" role="alert" hidden></div>
               </div>
-            </div>
-
-            <div class="review-field-group review-field-card card-menu">
-              <span class="review-field-label">
-                <span class="review-field-pill pill-forest">MENU YANG DIREVIEW</span>
-              </span>
-              <div class="review-menu-chips" id="reviewMenuChips" role="group" aria-label="Pilih Menu SAJI">
-                <button type="button" class="review-menu-chip active" data-menu="Semua Menu SAJI">Semua Menu</button>
-                <button type="button" class="review-menu-chip" data-menu="Sajian Sumba">Sajian Sumba</button>
-                <button type="button" class="review-menu-chip" data-menu="Sajian Bogor">Sajian Bogor</button>
-                <button type="button" class="review-menu-chip" data-menu="Sajian Yogya">Sajian Yogya</button>
-                <button type="button" class="review-menu-chip" data-menu="Sajian Gulung Yogya">Sajian Gulung Yogya</button>
-              </div>
-            </div>
-
-            <div class="review-field-group review-field-card card-quote">
-              <label class="review-field-label" for="reviewInputQuote">
-                <span class="review-field-pill pill-terracotta">TULIS REVIEW KAMU <span class="review-required-mark-light">*</span></span>
-              </label>
-              <textarea id="reviewInputQuote" class="review-textarea" rows="3" maxlength="220" required placeholder="Ceritakan pengalamanmu makan SAJI (contoh: Ubi ungunya lembut, porsinya pas, bikin kenyang sehat!)"></textarea>
-              <div class="review-textarea-meta">
-                <span class="review-char-count" id="reviewCharCount">0 / 220</span>
-              </div>
-              <div class="review-error-msg" id="reviewErrorMsg" role="alert" hidden></div>
             </div>
 
             <!-- Anti-bot honeypot -->

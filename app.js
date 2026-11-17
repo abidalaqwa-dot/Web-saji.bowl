@@ -908,7 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateReview(index, animate = true) {
     const total = testimonials.length;
     if (total === 0) {
-      const emptyQuote = '"JADILAH YANG PERTAMA BERBAGI CERITA & RASA FAVORITMU BERSAMA SAJI!"';
+      const emptyQuote = '"SUDAH COBA SAJI HARI INI? YUK, CERITAIN PENGALAMAN & RASA FAVORITMU DI SINI!"';
       if (quoteText) {
         quoteText.textContent = emptyQuote;
         quoteText.classList.remove('is-long-quote');
