@@ -32,6 +32,52 @@ const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN 
 const ALERT_WEBHOOK_URL = process.env.ALERT_WEBHOOK_URL || '';
 const MAX_CACHE_ENTRIES = 100;
 const MAX_RATE_LIMIT_KEYS = 5000;
+const ANON_REVIEW_AVATARS = [
+  'assets/anon_bowl.svg',
+  'assets/anon_wrap.svg',
+  'assets/anon_cucumber.svg',
+  'assets/anon_ubi.svg'
+];
+const REVIEW_ALLOWED_MENUS = new Set([
+  'Semua Menu SAJI',
+  'Sajian Sumba',
+  'Sajian Bogor',
+  'Sajian Yogya',
+  'Sajian Gulung Yogya'
+]);
+const REVIEWS_DISK_PATH = path.join(__dirname, 'data', 'reviews.json');
+const REVIEWS_TMP_PATH = path.join('/tmp', 'saji_reviews.json');
+
+function sanitizeReviewAvatar(rawAvatar, fallbackIdx = 0) {
+  const val = String(rawAvatar || '').trim();
+  if (/^assets\/anon_(bowl|wrap|cucumber|ubi)\.svg$/.test(val)) return val;
+  if (/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]{16,130000}$/.test(val)) return val;
+  return ANON_REVIEW_AVATARS[Math.abs(fallbackIdx) % ANON_REVIEW_AVATARS.length];
+}
+
+function loadInitialReviews() {
+  for (const p of [REVIEWS_DISK_PATH, REVIEWS_TMP_PATH]) {
+    try {
+      if (fs.existsSync(p)) {
+        const parsed = JSON.parse(fs.readFileSync(p, 'utf8') || '[]');
+        if (Array.isArray(parsed)) return parsed.slice(0, 50);
+      }
+    } catch {}
+  }
+  return [];
+}
+
+function persistReviews(list) {
+  const payload = JSON.stringify(list.slice(0, 50), null, 2);
+  for (const p of [REVIEWS_DISK_PATH, REVIEWS_TMP_PATH]) {
+    try {
+      fs.writeFileSync(p, payload, 'utf8');
+      return;
+    } catch {}
+  }
+}
+
+const customerReviewsStore = loadInitialReviews();
 
 /**
  * Real-Time SRE Alert Notification Dispatcher (Webhook & Audit Log)
@@ -601,6 +647,92 @@ async function requestHandler(req, res) {
           sanitizedName,
           sanitizedNotes
         }));
+      } catch (err) {
+        return sendBodyErrorStatus(res, err, secHeaders);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // ROUTE: CUSTOMER REVIEWS API (GET & POST /api/reviews)
+    // ------------------------------------------------------------------------
+    if (pathname === '/api/reviews' && req.method === 'GET') {
+      res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        ...secHeaders
+      });
+      return res.end(JSON.stringify({ success: true, reviews: customerReviewsStore }));
+    }
+
+    if (pathname === '/api/reviews' && req.method === 'POST') {
+      const revLimit = checkRateLimit(clientIp, 'review_submit', 8, 10 * 60 * 1000);
+      if (!revLimit.allowed) {
+        res.writeHead(429, {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Retry-After': String(revLimit.retryAfterSec),
+          ...secHeaders
+        });
+        return res.end(JSON.stringify({
+          error: 'Terlalu banyak pengiriman ulasan. Silakan coba lagi sebentar lagi.',
+          retryAfter: revLimit.retryAfterSec
+        }));
+      }
+
+      try {
+        const body = await parseJsonBody(req, 160 * 1024);
+        if (body.honeypot || body.review_hp_val) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8', ...secHeaders });
+          return res.end(JSON.stringify({ error: 'Permintaan tidak valid.' }));
+        }
+
+        const cleanQuote = String(body.quote || '')
+          .replace(/[\x00-\x1F\x7F<>]/g, ' ')
+          .replace(/^["“”]+|["“”]+$/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 220);
+
+        if (cleanQuote.length < 3) {
+          res.writeHead(422, { 'Content-Type': 'application/json; charset=utf-8', ...secHeaders });
+          return res.end(JSON.stringify({ error: 'Ulasan minimal 3 karakter ya.' }));
+        }
+
+        const rawName = String(body.name || '')
+          .replace(/[\x00-\x1F\x7F<>]/g, '')
+          .trim()
+          .slice(0, 48);
+        const cleanName = rawName || 'Sobat SAJI (Anonim)';
+
+        const rawMenu = String(body.menu || '').trim();
+        const cleanMenu = REVIEW_ALLOWED_MENUS.has(rawMenu) ? rawMenu : 'Semua Menu SAJI';
+
+        const parsedStars = Math.trunc(Number(body.stars));
+        const cleanStars = Number.isFinite(parsedStars) ? Math.max(1, Math.min(5, parsedStars)) : 5;
+
+        const cleanAvatar = sanitizeReviewAvatar(body.avatar, customerReviewsStore.length);
+        const hasPhoto = cleanAvatar.startsWith('data:image/');
+
+        const entry = {
+          id: `REV-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+          quote: cleanQuote,
+          name: cleanName,
+          menu: cleanMenu,
+          stars: cleanStars,
+          avatar: cleanAvatar,
+          hasPhoto,
+          createdAt: new Date().toISOString()
+        };
+
+        customerReviewsStore.unshift(entry);
+        if (customerReviewsStore.length > 50) customerReviewsStore.length = 50;
+        persistReviews(customerReviewsStore);
+
+        res.writeHead(201, {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Cache-Control': 'no-store',
+          ...secHeaders
+        });
+        return res.end(JSON.stringify({ success: true, review: entry }));
       } catch (err) {
         return sendBodyErrorStatus(res, err, secHeaders);
       }

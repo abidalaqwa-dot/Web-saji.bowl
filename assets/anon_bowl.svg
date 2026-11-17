@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" fill="none">
+  <rect width="320" height="320" fill="#EBE6DA"/>
+  <circle cx="160" cy="160" r="126" fill="#F7F5F0" stroke="#1E3622" stroke-width="3" stroke-dasharray="8 7" opacity="0.9"/>
+  <circle cx="62" cy="76" r="10" fill="#A3C193" stroke="#1E3622" stroke-width="2.5"/>
+  <circle cx="258" cy="240" r="8" fill="#F3C677" stroke="#1E3622" stroke-width="2.5"/>
+  <!-- Sparkles -->
+  <path d="M248 64L252 74L262 78L252 82L248 92L244 82L234 78L244 74L248 64Z" fill="#F3C677" stroke="#1E3622" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M68 228L71 235L78 238L71 241L68 248L65 241L58 238L65 235L68 228Z" fill="#C85A32" stroke="#1E3622" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Warm Steam -->
+  <path d="M132 76C128 62 138 54 132 42" stroke="#C85A32" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M160 70C156 56 166 48 160 36" stroke="#E8A855" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M188 76C184 62 194 54 188 42" stroke="#C85A32" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Bowl Toppings Mound -->
+  <ellipse cx="160" cy="146" rx="94" ry="34" fill="#3B6B48" stroke="#1E3622" stroke-width="4"/>
+  <!-- Lettuce & Veggies -->
+  <circle cx="102" cy="142" r="20" fill="#78B179" stroke="#1E3622" stroke-width="3"/>
+  <circle cx="218" cy="142" r="19" fill="#A3C193" stroke="#1E3622" stroke-width="3"/>
+  <!-- Ubi Ungu Scoop -->
+  <circle cx="136" cy="130" r="23" fill="#7A497A" stroke="#1E3622" stroke-width="3"/>
+  <circle cx="132" cy="125" r="7" fill="#9E6A9E" opacity="0.7"/>
+  <!-- Grilled Chicken & Corn -->
+  <circle cx="182" cy="128" r="22" fill="#E8A855" stroke="#1E3622" stroke-width="3"/>
+  <circle cx="160" cy="140" r="17" fill="#C85A32" stroke="#1E3622" stroke-width="3"/>
+  <circle cx="204" cy="148" r="12" fill="#F3C677" stroke="#1E3622" stroke-width="2.5"/>
+  <!-- Wooden Bowl Body -->
+  <path d="M58 148C58 214 102 246 160 246C218 246 262 214 262 148C262 138 58 138 58 148Z" fill="#DFB07E" stroke="#1E3622" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M74 166C92 214 128 232 160 232C192 232 228 214 246 166" stroke="#C68E57" stroke-width="3" stroke-linecap="round"/>
+  <!-- Bowl Rim Highlight -->
+  <ellipse cx="160" cy="148" rx="102" ry="12" fill="#F7F5F0" stroke="#1E3622" stroke-width="4"/>
+  <!-- Cute Anonymous Kawaii Face -->
+  <path d="M120 186C123 177 135 177 138 186" stroke="#1E3622" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M182 186C185 177 197 177 200 186" stroke="#1E3622" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="110" cy="197" r="9" fill="#C85A32" opacity="0.45"/>
+  <circle cx="210" cy="197" r="9" fill="#C85A32" opacity="0.45"/>
+  <path d="M148 197C154 206 166 206 172 197" stroke="#1E3622" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Bowl Base -->
+  <rect x="122" y="246" width="76" height="14" rx="7" fill="#C68E57" stroke="#1E3622" stroke-width="4"/>
+</svg>

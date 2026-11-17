@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" fill="none">
+  <rect width="320" height="320" fill="#F7F5F0"/>
+  <circle cx="160" cy="160" r="124" fill="#7A497A" opacity="0.14"/>
+  <circle cx="160" cy="160" r="114" stroke="#1E3622" stroke-width="2.5" stroke-dasharray="8 6" opacity="0.4"/>
+  <!-- Sprouting Leaf on Ubi Ungu -->
+  <path d="M160 82V58" stroke="#1E3622" stroke-width="4" stroke-linecap="round"/>
+  <path d="M160 66C140 50 124 62 136 74C144 80 156 76 160 66Z" fill="#78B179" stroke="#1E3622" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M160 64C180 46 198 58 186 72C178 80 164 76 160 64Z" fill="#A3C193" stroke="#1E3622" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Cute Ubi Ungu Body -->
+  <path d="M84 166C84 114 116 82 160 82C204 82 236 114 236 166C236 220 202 248 160 248C118 248 84 220 84 166Z" fill="#7A497A" stroke="#1E3622" stroke-width="4.5"/>
+  <!-- Inner Cut / Cream Belly Accent -->
+  <ellipse cx="160" cy="176" rx="56" ry="50" fill="#A66FA6"/>
+  <ellipse cx="160" cy="184" rx="42" ry="36" fill="#F7F5F0" stroke="#1E3622" stroke-width="3.5"/>
+  <!-- Happy Winking Eyes & Smile -->
+  <circle cx="140" cy="176" r="5.5" fill="#1E3622"/>
+  <circle cx="142" cy="174" r="1.8" fill="#FFFFFF"/>
+  <path d="M172 178C176 171 184 171 188 178" stroke="#1E3622" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="130" cy="189" r="6.5" fill="#C85A32" opacity="0.45"/>
+  <circle cx="190" cy="189" r="6.5" fill="#C85A32" opacity="0.45"/>
+  <path d="M151 190C156 198 164 198 169 190" stroke="#1E3622" stroke-width="4" stroke-linecap="round"/>
+  <!-- Tiny Cute Hands -->
+  <path d="M84 166C66 158 64 178 80 184" fill="#7A497A" stroke="#1E3622" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M236 166C254 152 260 172 242 182" fill="#7A497A" stroke="#1E3622" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Sparkles -->
+  <path d="M248 92L252 100L260 104L252 108L248 116L244 108L236 104L244 100L248 92Z" fill="#F3C677" stroke="#1E3622" stroke-width="2" stroke-linejoin="round"/>
+</svg>

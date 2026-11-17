@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" fill="none">
+  <rect width="320" height="320" fill="#F7F5F0"/>
+  <circle cx="160" cy="160" r="126" fill="#F3C677" opacity="0.32"/>
+  <circle cx="160" cy="160" r="118" stroke="#1E3622" stroke-width="2.5" stroke-dasharray="7 7" opacity="0.45"/>
+  <!-- Cute Leafy Crown Inside Wrap -->
+  <path d="M110 105C94 82 110 56 132 68C144 50 174 50 186 68C208 56 226 82 210 105Z" fill="#78B179" stroke="#1E3622" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="144" cy="84" r="12" fill="#F3C677" stroke="#1E3622" stroke-width="3"/>
+  <circle cx="176" cy="86" r="12" fill="#C85A32" stroke="#1E3622" stroke-width="3"/>
+  <!-- Purple Ubi Tortilla Fold -->
+  <path d="M98 112C98 86 222 86 222 112L204 208H116L98 112Z" fill="#7A497A" stroke="#1E3622" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M116 106C136 122 184 122 204 106" stroke="#B275B2" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Kraft Paper Sleeve -->
+  <path d="M104 150L122 262C124 270 196 270 198 262L216 150C188 164 132 164 104 150Z" fill="#DFB07E" stroke="#1E3622" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M108 158L160 178L212 158" stroke="#1E3622" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Cute Happy Face on Kraft Sleeve -->
+  <circle cx="140" cy="204" r="6" fill="#1E3622"/>
+  <circle cx="142" cy="202" r="2" fill="#FFFFFF"/>
+  <circle cx="180" cy="204" r="6" fill="#1E3622"/>
+  <circle cx="182" cy="202" r="2" fill="#FFFFFF"/>
+  <circle cx="128" cy="216" r="7.5" fill="#C85A32" opacity="0.45"/>
+  <circle cx="192" cy="216" r="7.5" fill="#C85A32" opacity="0.45"/>
+  <path d="M150 218C156 226 164 226 170 218" stroke="#1E3622" stroke-width="4" stroke-linecap="round"/>
+  <!-- Floating Sparkles -->
+  <path d="M62 112L66 121L75 125L66 129L62 138L58 129L49 125L58 121L62 112Z" fill="#C85A32" stroke="#1E3622" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M254 118L258 127L267 131L258 135L254 144L250 135L241 131L250 127L254 118Z" fill="#F3C677" stroke="#1E3622" stroke-width="2" stroke-linejoin="round"/>
+</svg>

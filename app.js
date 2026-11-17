@@ -197,16 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // Spotlight Testimonials Data (Section 4 - Coming Soon)
-  const testimonials = [
-    {
-      quote: "ULASAN SEGERA HADIR",
-      name: "SAJI Healthy Bowl",
-      role: "Ulasan Pelanggan Segera Hadir",
-      avatar: "assets/logo.svg",
-      stars: 5
-    }
+  // Spotlight Testimonials Data (Section 4 - Self-Service Interactive Reviews)
+  const ANON_REVIEW_AVATARS = [
+    'assets/anon_bowl.svg',
+    'assets/anon_wrap.svg',
+    'assets/anon_cucumber.svg',
+    'assets/anon_ubi.svg'
   ];
+  const REVIEWS_STORAGE_KEY = 'saji_customer_reviews_v2';
+  try { localStorage.removeItem('saji_customer_reviews_v1'); } catch {}
+  let testimonials = [];
 
   // Cart State (Starts at 0 empty state)
   const cart = {
@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2B. PRODUCT CUSTOMIZER MODAL & FLYING BOWL TO CART ANIMATION (Instruksi 4)
   // --------------------------------------------------------------------------
   const customizerModal = $('sajiCustomizerModal');
+  const reviewModal = $('sajiReviewModal');
   const btnCloseCustomizer = $('closeCustomizerModal');
   const modalImg = $('modalProductImg');
   const modalBadge = $('modalProductBadge');
@@ -303,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function syncBodyScroll() {
-    const anyOpen = [customizerModal, privacyModal].some(m => m && m.classList.contains('active')) ||
+    const anyOpen = [customizerModal, privacyModal, reviewModal].some(m => m && m.classList.contains('active')) ||
       (drawerBackdrop && drawerBackdrop.classList.contains('active')) ||
       (mobileNavMenu && mobileNavMenu.classList.contains('open'));
     document.body.style.overflow = anyOpen ? 'hidden' : '';
@@ -689,26 +690,350 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 5. CUSTOMER EXPERIENCE TESTIMONIAL SLIDER (SECTION 4)
+  // 5. CUSTOMER EXPERIENCE TESTIMONIALS & SELF-SERVICE REVIEW STUDIO (SECTION 4)
   // --------------------------------------------------------------------------
   let currentReviewIndex = 0;
+  let selectedReviewStars = 0;
+  let selectedReviewMenu = 'Semua Menu SAJI';
+  let uploadedReviewPhotoDataUrl = '';
+
+  const spotlightCard = $('spotlightReviewCard');
   const quoteText = $('spotlightQuote');
+  const spotlightStars = $('spotlightStars');
+  const spotlightMenuBadge = $('spotlightMenuBadge');
+  const reviewerMeta = $('reviewerMeta');
   const reviewerName = $('reviewerName');
   const reviewerRole = $('reviewerRole');
   const reviewerPhoto = $('reviewerPhoto');
+  const reviewerPhotoFrame = $('reviewerPhotoFrame');
   const btnReviewPrev = $('reviewPrev');
   const btnReviewNext = $('reviewNext');
+  const reviewSliderCounter = $('reviewSliderCounter');
+  const secondaryReviewsGrid = $('secondaryReviewsGrid');
+  const btnJumpToReviewForm = $('btnJumpToReviewForm');
+  const btnCloseReviewModal = $('closeReviewModal');
+  const reviewComposerCard = $('reviewComposerCard');
 
-  function updateReview(index) {
-    if (index < 0) index = testimonials.length - 1;
-    if (index >= testimonials.length) index = 0;
+  const reviewForm = $('sajiReviewForm');
+  const reviewPhotoDropzone = $('reviewPhotoDropzone');
+  const reviewPhotoInput = $('reviewPhotoInput');
+  const reviewUploadPreviewFrame = $('reviewUploadPreviewFrame');
+  const reviewUploadPreviewImg = $('reviewUploadPreviewImg');
+  const reviewPhotoClearBtn = $('reviewPhotoClearBtn');
+  const reviewStarPicker = $('reviewStarPicker');
+  const reviewStarLabel = $('reviewStarLabel');
+  const reviewInputName = $('reviewInputName');
+  const reviewMenuChips = $('reviewMenuChips');
+  const reviewInputQuote = $('reviewInputQuote');
+  const reviewCharCount = $('reviewCharCount');
+  const reviewErrorMsg = $('reviewErrorMsg');
+  const reviewSubmitBtn = $('reviewSubmitBtn');
+  const reviewHpField = $('reviewHpField');
+
+  const STAR_LABELS = {
+    1: '1/5 · Perlu Perbaikan',
+    2: '2/5 · Lumayan',
+    3: '3/5 · Enak',
+    4: '4/5 · Enak Banget!',
+    5: '5/5 · Juara!'
+  };
+
+  function isSafeReviewAvatar(src) {
+    const val = String(src || '').trim();
+    return /^assets\/anon_(bowl|wrap|cucumber|ubi)\.svg$/.test(val) ||
+      /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]{16,130000}$/.test(val);
+  }
+
+  function formatQuotedReview(raw) {
+    const cleaned = sanitizeField(raw, 220)
+      .replace(/^["“”]+|["“”]+$/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return cleaned ? `"${cleaned}"` : '""';
+  }
+
+  function formatReviewDate(iso) {
+    if (!iso) return 'Baru saja';
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return 'Baru saja';
+    const diffMs = Date.now() - d.getTime();
+    if (diffMs < 60 * 1000) return 'Baru saja';
+    try {
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    } catch {
+      return 'Pelanggan SAJI';
+    }
+  }
+
+  function normalizeReviewEntry(raw, idx = 0) {
+    if (!raw || typeof raw !== 'object') return null;
+    const quote = sanitizeField(raw.quote || '', 220).replace(/^["“”]+|["“”]+$/g, '').trim();
+    if (quote.length < 3) return null;
+    const name = sanitizeField(raw.name || '', 48) || 'Sobat SAJI (Anonim)';
+    const menu = sanitizeField(raw.menu || 'Semua Menu SAJI', 40) || 'Semua Menu SAJI';
+    const stars = clampInt(raw.stars || 5, 1, 5);
+    const fallbackAvatar = ANON_REVIEW_AVATARS[Math.abs(idx) % ANON_REVIEW_AVATARS.length];
+    const avatar = isSafeReviewAvatar(raw.avatar) ? String(raw.avatar).trim() : fallbackAvatar;
+    return {
+      id: sanitizeField(raw.id || `LOCAL-${idx}-${quote.slice(0, 8)}`, 64),
+      quote,
+      name,
+      menu,
+      stars,
+      avatar,
+      hasPhoto: avatar.startsWith('data:image/'),
+      createdAt: raw.createdAt || new Date().toISOString()
+    };
+  }
+
+  function readLocalReviews() {
+    try {
+      const raw = localStorage.getItem(REVIEWS_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((item, i) => normalizeReviewEntry(item, i)).filter(Boolean).slice(0, 50);
+    } catch {
+      return [];
+    }
+  }
+
+  function writeLocalReviews(list) {
+    try {
+      localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(list.slice(0, 50)));
+    } catch {}
+  }
+
+  function mergeReviews(primary, secondary) {
+    const seen = new Set();
+    const out = [];
+    [...primary, ...secondary].forEach((raw, i) => {
+      const item = normalizeReviewEntry(raw, i);
+      if (!item) return;
+      const dedupeKey = `${item.name.toLowerCase()}::${item.quote.toLowerCase()}`;
+      if (seen.has(item.id) || seen.has(dedupeKey)) return;
+      seen.add(item.id);
+      seen.add(dedupeKey);
+      out.push(item);
+    });
+    return out.slice(0, 50);
+  }
+
+  function applyPhotoFrameState(frameEl, imgEl, avatarSrc, altLabel) {
+    if (!imgEl) return;
+    const safeSrc = isSafeReviewAvatar(avatarSrc) ? avatarSrc : ANON_REVIEW_AVATARS[0];
+    const isAnon = !safeSrc.startsWith('data:image/');
+    imgEl.src = safeSrc;
+    imgEl.alt = altLabel;
+    imgEl.classList.toggle('is-anon-avatar', isAnon);
+    imgEl.classList.toggle('is-user-photo', !isAnon);
+    if (frameEl) {
+      frameEl.classList.toggle('is-anon-frame', isAnon);
+      frameEl.classList.toggle('is-user-frame', !isAnon);
+    }
+  }
+
+  function renderSecondaryReviews() {
+    if (!secondaryReviewsGrid) return;
+    if (!testimonials.length) {
+      secondaryReviewsGrid.hidden = true;
+      secondaryReviewsGrid.textContent = '';
+      return;
+    }
+
+    secondaryReviewsGrid.hidden = false;
+    secondaryReviewsGrid.textContent = '';
+
+    const visibleItems = testimonials.slice(0, 3);
+    visibleItems.forEach((item, idx) => {
+      const col = document.createElement('div');
+      col.className = 'secondary-review-col' + (idx === currentReviewIndex ? ' is-active' : '');
+      col.setAttribute('role', 'button');
+      col.setAttribute('tabindex', '0');
+      col.setAttribute('aria-label', `Tampilkan ulasan dari ${item.name}`);
+
+      const pill = document.createElement('div');
+      pill.className = 'review-user-pill';
+
+      const pillAvatar = document.createElement('div');
+      pillAvatar.className = 'pill-avatar';
+      const avatarImg = document.createElement('img');
+      avatarImg.width = 36;
+      avatarImg.height = 36;
+      avatarImg.loading = 'lazy';
+      applyPhotoFrameState(null, avatarImg, item.avatar, item.hasPhoto ? `Foto ${item.name}` : `Avatar anonim SAJI untuk ${item.name}`);
+      pillAvatar.appendChild(avatarImg);
+
+      const userInfo = document.createElement('div');
+      userInfo.className = 'pill-user-info';
+      const userName = document.createElement('span');
+      userName.className = 'pill-user-name';
+      userName.textContent = item.name;
+      const userRole = document.createElement('span');
+      userRole.className = 'pill-user-role';
+      userRole.textContent = item.menu;
+      userInfo.appendChild(userName);
+      userInfo.appendChild(userRole);
+
+      pill.appendChild(pillAvatar);
+      pill.appendChild(userInfo);
+
+      const bubble = document.createElement('div');
+      bubble.className = 'review-card-bubble';
+      const starsEl = document.createElement('div');
+      starsEl.className = 'review-card-stars';
+      starsEl.textContent = '★'.repeat(item.stars) + '☆'.repeat(5 - item.stars);
+      const quoteEl = document.createElement('p');
+      quoteEl.className = 'review-card-quote';
+      quoteEl.textContent = formatQuotedReview(item.quote);
+      bubble.appendChild(starsEl);
+      bubble.appendChild(quoteEl);
+
+      col.appendChild(pill);
+      col.appendChild(bubble);
+
+      const selectCard = () => updateReview(idx, true);
+      col.addEventListener('click', selectCard);
+      col.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          selectCard();
+        }
+      });
+
+      secondaryReviewsGrid.appendChild(col);
+    });
+  }
+
+  function updateReview(index, animate = true) {
+    const total = testimonials.length;
+    if (total === 0) {
+      const emptyQuote = '"JADILAH YANG PERTAMA BERBAGI CERITA & RASA FAVORITMU BERSAMA SAJI!"';
+      if (quoteText) {
+        quoteText.textContent = emptyQuote;
+        quoteText.classList.remove('is-long-quote');
+      }
+      if (spotlightStars) {
+        spotlightStars.textContent = '★★★★★';
+        spotlightStars.setAttribute('aria-label', 'Rating 5 dari 5 bintang');
+      }
+      if (spotlightMenuBadge) spotlightMenuBadge.textContent = 'OPEN FOR REVIEWS';
+      if (reviewerMeta) reviewerMeta.hidden = true;
+      if (reviewerName) reviewerName.textContent = '';
+      if (reviewerRole) reviewerRole.textContent = '';
+      applyPhotoFrameState(reviewerPhotoFrame, reviewerPhoto, ANON_REVIEW_AVATARS[0], 'Avatar Anonim Lucu SAJI');
+      if (reviewSliderCounter) reviewSliderCounter.textContent = '0 / 0';
+      if (btnReviewPrev) btnReviewPrev.disabled = true;
+      if (btnReviewNext) btnReviewNext.disabled = true;
+      renderSecondaryReviews();
+      return;
+    }
+
+    if (index < 0) index = total - 1;
+    if (index >= total) index = 0;
     currentReviewIndex = index;
 
     const data = testimonials[currentReviewIndex];
-    fadeSwap(quoteText, 'rev', () => { quoteText.textContent = data.quote; });
+    const quoted = formatQuotedReview(data.quote);
+    const applyQuoteText = () => {
+      if (!quoteText) return;
+      quoteText.textContent = quoted;
+      quoteText.classList.toggle('is-long-quote', quoted.length > 110);
+    };
+
+    if (animate) fadeSwap(quoteText, 'rev', applyQuoteText);
+    else applyQuoteText();
+
+    if (spotlightStars) {
+      spotlightStars.textContent = '★'.repeat(data.stars) + '☆'.repeat(5 - data.stars);
+      spotlightStars.setAttribute('aria-label', `Rating ${data.stars} dari 5 bintang`);
+    }
+    if (spotlightMenuBadge) spotlightMenuBadge.textContent = data.menu;
+    if (reviewerMeta) reviewerMeta.hidden = false;
     if (reviewerName) reviewerName.textContent = data.name;
-    if (reviewerRole) reviewerRole.textContent = data.role;
-    if (reviewerPhoto) reviewerPhoto.src = data.avatar;
+    if (reviewerRole) {
+      const prefix = data.hasPhoto ? 'Pelanggan SAJI' : 'Sobat SAJI';
+      reviewerRole.textContent = `${prefix} · ${formatReviewDate(data.createdAt)}`;
+    }
+
+    applyPhotoFrameState(
+      reviewerPhotoFrame,
+      reviewerPhoto,
+      data.avatar,
+      data.hasPhoto ? `Foto ulasan dari ${data.name}` : `Avatar anonim SAJI untuk ${data.name}`
+    );
+
+    if (reviewSliderCounter) reviewSliderCounter.textContent = `${currentReviewIndex + 1} / ${total}`;
+    if (btnReviewPrev) btnReviewPrev.disabled = total <= 1;
+    if (btnReviewNext) btnReviewNext.disabled = total <= 1;
+
+    renderSecondaryReviews();
+  }
+
+  function updateComposerAnonPreview() {
+    if (uploadedReviewPhotoDataUrl) {
+      applyPhotoFrameState(reviewUploadPreviewFrame, reviewUploadPreviewImg, uploadedReviewPhotoDataUrl, 'Preview foto ulasanmu');
+      if (reviewPhotoClearBtn) reviewPhotoClearBtn.hidden = false;
+    } else {
+      const nextAnon = ANON_REVIEW_AVATARS[testimonials.length % ANON_REVIEW_AVATARS.length];
+      applyPhotoFrameState(reviewUploadPreviewFrame, reviewUploadPreviewImg, nextAnon, 'Preview Avatar Anonim Lucu SAJI');
+      if (reviewPhotoClearBtn) reviewPhotoClearBtn.hidden = true;
+    }
+  }
+
+  function compressUploadedPhoto(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !/^image\/(jpeg|png|webp|gif|heic|heif)$/i.test(file.type || '')) {
+        if (!file || !String(file.type || '').startsWith('image/')) {
+          return reject(new Error('Pilih file gambar (JPG, PNG, atau WebP) ya.'));
+        }
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        return reject(new Error('Ukuran foto maksimal 10 MB ya.'));
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Gagal membaca foto. Coba pilih gambar lain.'));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Format gambar tidak didukung browser ini. Gunakan JPG atau PNG.'));
+        img.onload = () => {
+          const maxSide = 360;
+          const scale = Math.min(1, maxSide / Math.max(img.width || 1, img.height || 1));
+          const w = Math.max(1, Math.round(img.width * scale));
+          const h = Math.max(1, Math.round(img.height * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('Browser tidak mendukung pemrosesan gambar.'));
+          ctx.fillStyle = '#F7F5F0';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+
+          let quality = 0.8;
+          let out = canvas.toDataURL('image/jpeg', quality);
+          while (out.length > 115000 && quality > 0.45) {
+            quality -= 0.1;
+            out = canvas.toDataURL('image/jpeg', quality);
+          }
+          resolve(out);
+        };
+        img.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleReviewPhotoFile(file) {
+    if (!file) return;
+    try {
+      const compressed = await compressUploadedPhoto(file);
+      uploadedReviewPhotoDataUrl = compressed;
+      updateComposerAnonPreview();
+      showToast('Foto review berhasil dimuat!');
+    } catch (err) {
+      showToast(err && err.message ? err.message : 'Gagal memuat foto.');
+    }
   }
 
   if (btnReviewPrev) {
@@ -717,6 +1042,247 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnReviewNext) {
     btnReviewNext.addEventListener('click', () => updateReview(currentReviewIndex + 1));
   }
+
+  function openReviewModal() {
+    if (!reviewModal) return;
+    updateComposerAnonPreview();
+    setOverlayActive(reviewModal, true, 'modal-open');
+    safeTimeout(() => {
+      if (reviewInputQuote) reviewInputQuote.focus({ preventScroll: true });
+    }, 240);
+  }
+
+  function closeReviewModal() {
+    setOverlayActive(reviewModal, false, 'modal-open');
+  }
+
+  if (btnJumpToReviewForm) {
+    btnJumpToReviewForm.addEventListener('click', openReviewModal);
+  }
+
+  if (btnCloseReviewModal) {
+    btnCloseReviewModal.addEventListener('click', closeReviewModal);
+  }
+
+  if (reviewModal) {
+    reviewModal.addEventListener('click', (e) => {
+      if (e.target === reviewModal) closeReviewModal();
+    });
+  }
+
+  const starBtns = reviewStarPicker ? reviewStarPicker.querySelectorAll('.star-pick-btn') : [];
+  function syncStarsUI(val) {
+    starBtns.forEach((b) => {
+      const sVal = Number(b.getAttribute('data-star') || 0);
+      const isFilled = val > 0 && sVal <= val;
+      b.classList.toggle('active', isFilled);
+      b.textContent = isFilled ? '★' : '☆';
+      b.setAttribute('aria-checked', String(val > 0 && sVal === val));
+    });
+    if (reviewStarLabel) {
+      reviewStarLabel.textContent = val > 0 ? (STAR_LABELS[val] || `${val}/5`) : 'Pilih bintang';
+    }
+  }
+
+  if (reviewStarPicker) {
+    starBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        selectedReviewStars = clampInt(btn.getAttribute('data-star'), 1, 5);
+        syncStarsUI(selectedReviewStars);
+        if (reviewErrorMsg) reviewErrorMsg.hidden = true;
+      });
+    });
+    syncStarsUI(selectedReviewStars);
+  }
+
+  if (reviewMenuChips) {
+    const chips = reviewMenuChips.querySelectorAll('.review-menu-chip');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        selectedReviewMenu = chip.getAttribute('data-menu') || 'Semua Menu SAJI';
+      });
+    });
+  }
+
+  if (reviewPhotoInput) {
+    reviewPhotoInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) handleReviewPhotoFile(file);
+    });
+  }
+
+  if (reviewPhotoDropzone) {
+    ['dragenter', 'dragover'].forEach((evt) => {
+      reviewPhotoDropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        reviewPhotoDropzone.classList.add('is-dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach((evt) => {
+      reviewPhotoDropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        reviewPhotoDropzone.classList.remove('is-dragover');
+      });
+    });
+    reviewPhotoDropzone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) handleReviewPhotoFile(file);
+    });
+  }
+
+  if (reviewPhotoClearBtn) {
+    reviewPhotoClearBtn.addEventListener('click', () => {
+      uploadedReviewPhotoDataUrl = '';
+      if (reviewPhotoInput) reviewPhotoInput.value = '';
+      updateComposerAnonPreview();
+    });
+  }
+
+  bindCleanInput(reviewInputName, 48);
+  bindCleanInput(reviewInputQuote, 220, () => {
+    if (reviewCharCount && reviewInputQuote) {
+      reviewCharCount.textContent = `${reviewInputQuote.value.length} / 220`;
+    }
+    if (reviewErrorMsg) reviewErrorMsg.hidden = true;
+  });
+
+  let isSubmittingReview = false;
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (reviewHpField && reviewHpField.value.trim()) return;
+      if (isSubmittingReview) return;
+
+      const rawQuote = reviewInputQuote ? reviewInputQuote.value : '';
+      const cleanQuote = sanitizeField(rawQuote, 220)
+        .replace(/^["“”]+|["“”]+$/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (selectedReviewStars < 1 || selectedReviewStars > 5) {
+        if (reviewErrorMsg) {
+          reviewErrorMsg.textContent = 'Pilih rating bintang (1–5) terlebih dahulu ya!';
+          reviewErrorMsg.hidden = false;
+        }
+        if (reviewStarPicker) {
+          const firstStar = reviewStarPicker.querySelector('.star-pick-btn');
+          if (firstStar) firstStar.focus();
+        }
+        return;
+      }
+
+      if (cleanQuote.length < 3) {
+        if (reviewErrorMsg) {
+          reviewErrorMsg.textContent = 'Tuliskan ulasanmu minimal 3 karakter sebelum mengirim ya!';
+          reviewErrorMsg.hidden = false;
+        }
+        if (reviewInputQuote) reviewInputQuote.focus();
+        return;
+      }
+
+      if (reviewErrorMsg) reviewErrorMsg.hidden = true;
+      isSubmittingReview = true;
+      if (reviewSubmitBtn) {
+        reviewSubmitBtn.disabled = true;
+        reviewSubmitBtn.style.opacity = '0.7';
+      }
+
+      const starsToSubmit = selectedReviewStars;
+      const menuToSubmit = selectedReviewMenu;
+      const rawName = sanitizeField(reviewInputName ? reviewInputName.value : '', 48);
+      const cleanName = rawName || 'Sobat SAJI (Anonim)';
+      const fallbackAnon = ANON_REVIEW_AVATARS[testimonials.length % ANON_REVIEW_AVATARS.length];
+      const avatarToUse = uploadedReviewPhotoDataUrl && isSafeReviewAvatar(uploadedReviewPhotoDataUrl)
+        ? uploadedReviewPhotoDataUrl
+        : fallbackAnon;
+
+      const newEntry = normalizeReviewEntry({
+        id: `REV-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        quote: cleanQuote,
+        name: cleanName,
+        menu: menuToSubmit,
+        stars: starsToSubmit,
+        avatar: avatarToUse,
+        createdAt: new Date().toISOString()
+      }, testimonials.length);
+
+      if (newEntry) {
+        testimonials = mergeReviews([newEntry], testimonials);
+        writeLocalReviews(testimonials);
+        updateReview(0, false);
+
+        if (spotlightCard) {
+          spotlightCard.classList.remove('is-just-submitted');
+          void spotlightCard.offsetWidth;
+          spotlightCard.classList.add('is-just-submitted');
+        }
+      }
+
+      // Reset composer cleanly and collapse form back into Image 1 view
+      if (reviewInputQuote) reviewInputQuote.value = '';
+      if (reviewInputName) reviewInputName.value = '';
+      if (reviewCharCount) reviewCharCount.textContent = '0 / 220';
+      selectedReviewStars = 0;
+      syncStarsUI(0);
+      uploadedReviewPhotoDataUrl = '';
+      if (reviewPhotoInput) reviewPhotoInput.value = '';
+      updateComposerAnonPreview();
+      closeReviewModal();
+
+      showToast('Terima kasih! Ulasanmu langsung tampil di kotak review.');
+
+      // Persist asynchronously to backend API when available
+      try {
+        const res = await fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quote: cleanQuote,
+            name: rawName,
+            menu: menuToSubmit,
+            stars: starsToSubmit,
+            avatar: avatarToUse,
+            honeypot: ''
+          })
+        });
+        if (res.ok) {
+          const payload = await res.json();
+          if (payload && payload.review) {
+            testimonials = mergeReviews([payload.review], testimonials);
+            writeLocalReviews(testimonials);
+            updateReview(0, false);
+          }
+        }
+      } catch {}
+
+      safeTimeout(() => {
+        isSubmittingReview = false;
+        if (reviewSubmitBtn) {
+          reviewSubmitBtn.disabled = false;
+          reviewSubmitBtn.style.opacity = '';
+        }
+      }, 600);
+    });
+  }
+
+  // Hydrate reviews immediately from localStorage, then sync from server if available
+  testimonials = readLocalReviews();
+  updateReview(0, false);
+  updateComposerAnonPreview();
+
+  fetch('/api/reviews', { cache: 'no-store' })
+    .then(r => (r.ok ? r.json() : null))
+    .then(data => {
+      if (data && Array.isArray(data.reviews) && data.reviews.length) {
+        testimonials = mergeReviews(testimonials, data.reviews);
+        writeLocalReviews(testimonials);
+        updateReview(Math.min(currentReviewIndex, Math.max(0, testimonials.length - 1)), false);
+        updateComposerAnonPreview();
+      }
+    })
+    .catch(() => {});
 
   // --------------------------------------------------------------------------
   // 6. ORDER DRAWER, 3-STEP CHECKOUT & CART MANAGEMENT
@@ -1151,6 +1717,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (privacyModal && privacyModal.classList.contains('active')) return closePrivacyModal();
+    if (reviewModal && reviewModal.classList.contains('active')) return closeReviewModal();
     if (customizerModal && customizerModal.classList.contains('active')) return closeCustomizerModal();
     if (drawerBackdrop && drawerBackdrop.classList.contains('active')) return closeDrawer();
     if (mobileNavMenu && mobileNavMenu.classList.contains('open')) return closeMobileNav();
